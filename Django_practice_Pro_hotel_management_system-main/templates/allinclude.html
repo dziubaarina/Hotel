@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>{% block title %}{% endblock %}</title>
+     <link rel="preconnect" href="https://fonts.gstatic.com">
+     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+     {% load static %}
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/bootstrap.min.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/fontawesome.min.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/animate.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/slick.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/jquery.datetimepicker.min.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/modal-video.min.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/magnific-popup.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/Style.css'%}">
+     <link rel="stylesheet" href="{%static 'Allfiles/Css/Responsive.css'%}">
+</head>
+<body>
+
+     <header id="header">
+            <div class="container">
+                 <div class="row">
+                  <div class="header_top">
+                         <div class="row">
+                             <div class="col-lg-7">
+                                 <div class="header_top_left">
+                                     <ul>
+                                        <li><span><i class="fas fa-map-marker-alt"></i>30 Jubilee Hills, Hyderabad</span></li>
+                                        <li><span><i class="fas fa-phone-alt"></i>9182285606</span></li>
+                                        <li><span><i class="far fa-envelope"></i>hotellucia@gmail.com</span></li>
+                                    </ul>
+                                 </div>
+                             </div>
+                            <div class="col-lg-5">
+                                <div class="header_top_right">
+                                   <ul>
+                                      <li><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
+                                      <li><a href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
+                                      <li><a href="https://plus.google.com/"><i class="fab fa-google-plus-g"></i></a></li>
+                                      <li><a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a></li>
+                                      <li> <a href="https://www.pinterest.com/"><i class="fab fa-pinterest-p"></i></a></li>
+
+                                      {% if user.is_authenticated %}
+                                        <li><a href="/wyloguj/">Wyloguj ({{ user.username }})</a></li>
+                                      {% else %}
+                                        <li><a href="{% url 'Aothur_login' %}"><i class="fas fa-user"></i> Zaloguj się</a></li>
+                                      {% endif %}
+
+                                   </ul>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                 </div>
+             </div>
+
+             <nav class="navbar navbar-expand-lg menu">
+                 <div class="container">
+                   <a class="menu_logo" href="/">
+                     <h1>Lucia</h1><span>Hotel & Resort</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#Mynav" >
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                   <div class="collapse navbar-collapse " id="Mynav">
+
+                      <ul class="navbar-nav m-0 p-0">
+                        <li class="nav-item">
+                          <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item menu-item">
+                          <a class="nav-link" href="/#OUR_ROOMS">Pokoje i Ceny</a>
+                        </li>
+                        <li class="nav-item menu-item">
+                          <a class="nav-link" href="/#GALLERY">Galeria</a>
+                        </li>
+                       <li class="nav-item menu-item ">
+                          <a class="nav-link" href="/#about">O nas</a>
+                       </li>
+                       <li class="nav-item menu-item ">
+                          <a class="nav-link" href="#footer">Kontakt</a>
+                       </li>
+
+                       {% if user.is_authenticated and user.is_staff %}
+                       <li class="nav-item">
+                           <a class="nav-link" href="/admin/" style="background-color: #ffc107; color: black !important; border-radius: 4px; padding: 5px 10px !important; margin-left: 10px; font-weight: 700; font-size: 13px;">
+                               <i class="fas fa-tools"></i> ADMIN
+                           </a>
+                       </li>
+                       {% endif %}
+
+                     </ul>
+                   </div>
+
+                   <div class="Booking_button">
+                    <a href="{% url 'OnlineBooking' %}">Booking Now<span><i class="fas fa-angle-double-right"></i></span></a>
+                   </div>
+                 </div>
+             </nav>
+     </header>
+
+   {% block contant %}{% endblock %}
+
+   <footer id="footer">
+     <div class="container">
+         <div class="row">
+               <div class="col-lg-3">
+                  <div class="footer_content1">
+                      <a class="menu_logo" href="#">
+                         <h1>Lucia</h1><span>Hotel & Resort</span>
+                      </a>
+                      <p>Welcome to Hotel Booking Management, your one-stop solution for hassle-free hotel reservations.</p>
+                      <ul>
+                           <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                           <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                           <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                           <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-3 ">
+                  <div class="footer_content2">
+                      <h3> CONTACT US </h3>
+                     <div class="row">
+                        <div class="col-lg-6">
+                              <ul class="footer_list1">
+                                    <li><a href="#"><i class="fas fa-map-marker-alt"></i></a></li>
+                                    <li><a href="#"><i class="fas fa-phone-alt"></i></a></li>
+                                    <li><a href="#"><i class="far fa-envelope"></i></a></li>
+                              </ul>
+                        </div>
+                        <div class="col-lg-6">
+                              <ul class="footer_list2">
+                                    <li><a href="#">30 Jubilee Hills, Hyderabad</a></li>
+                                    <li><a href="#">9182285606 </a></li>
+                                    <li><a href="#">hotellucia@gmail.com</a></li>
+                              </ul>
+                        </div>
+                  </div>
+               </div>
+             </div>
+             <div class="col-lg-3 ">
+                  <div class="footer_content2">
+                     <h3> QUICK LINKS </h3>
+                    <ul class="footer_link">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#GALLERY">Gallery</a></li>
+                        <li><a href="/#OUR_ROOMS">Room Details</a></li>
+                        <li><a href="#footer">Contact Us</a></li>
+                     </ul>
+                  </div>
+             </div>
+             <div class="col-lg-3 ">
+                  <div class="footer_content4">
+                     <h3> COLLECTIONS </h3>
+                    <ul class="footer_img">
+                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-1.jpg'%}" alt="img"></a></li>
+                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-2.jpg'%}" alt="img"></a></li>
+                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-3.jpg'%}" alt="img"></a></li>
+                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-4.jpg'%}" alt="img"></a></li>
+                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-5.jpg'%}" alt="img"></a></li>
+                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-6.jpg'%}" alt="img"></a></li>
+                     </ul>
+                  </div>
+             </div>
+           </div>
+         </div>
+     </div>
+   </footer>
+
+     <script src="{%static 'Allfiles/Js/bootstrap.bundle.min.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/jquery-1.12.4.min.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/jquery.textillate.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/jquery.lettering.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/slick.min.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/jquery.datetimepicker.full.min.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/jquery-modal-video.min.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/jquery.magnific-popup.min.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/tabs.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/jquery.counterup.min.js'%}"></script>
+     <script src="{%static 'Allfiles/Js/Script.js'%}"></script>
+</body>

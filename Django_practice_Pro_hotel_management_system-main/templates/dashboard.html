@@ -1,0 +1,49 @@
+{% extends 'allinclude.html' %} # To jest magia - panel będzie wyglądał jak strona główna
+
+{% block title %}Panel Administratora - Lucia Hotel{% endblock %}
+
+{% block contant %}
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="row">
+        <div class="col-lg-12 text-center" style="margin-bottom: 30px;">
+            <h2 style="color: #c5a059; font-weight: 700; font-family: 'Montserrat', sans-serif;">PULPIT NAWIGACYJNY ADMINISTRATORA</h2>
+            <p style="color: #555;">Witaj, {{ user.username }}. Poniżej znajdziesz szybki dostęp do zarządzania hotelem.</p>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-lg-4" style="margin-bottom: 20px;">
+            <div style="background: #fff; border: 1px solid #ddd; border-radius: 5px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='0 5px 15px rgba(0,0,0,0.05)'">
+                <i class="fas fa-bed" style="font-size: 50px; color: #c5a059; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 36px; font-weight: 700;">{{ total_rooms }}</h3>
+                <p style="color: #555; font-size: 18px; margin-bottom: 15px;">Zarządzanie Pokojami</p>
+                <a href="/dashboard/add-room/" style="background-color: #c5a059; color: white !important; border-radius: 3px; padding: 8px 15px; display: inline-block; font-weight: bold; font-size: 14px; text-decoration: none; margin-top: 10px;">
+                    DODAJ POKÓJ
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-4" style="margin-bottom: 20px;">
+            <div style="background: #fff; border: 1px solid #ddd; border-radius: 5px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='0 5px 15px rgba(0,0,0,0.05)'">
+                <i class="fas fa-calendar-check" style="font-size: 50px; color: #c5a059; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 36px; font-weight: 700;">{{ total_bookings }}</h3>
+                <p style="color: #555; font-size: 18px; margin-bottom: 15px;">Rezerwacje Online</p>
+                <a href="/dashboard/bookings/" style="background-color: #c5a059; color: white !important; border-radius: 3px; padding: 8px 15px; display: inline-block; font-weight: bold; font-size: 14px; text-decoration: none; margin-top: 10px;">
+                    ZOBACZ REZERWACJE
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-4" style="margin-bottom: 20px;">
+            <div style="background: #fff; border: 1px solid #ddd; border-radius: 5px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='0 5px 15px rgba(0,0,0,0.05)'">
+                <i class="fas fa-user-tie" style="font-size: 50px; color: #c5a059; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 36px; font-weight: 700;">Admin</h3>
+                <p style="color: #555; font-size: 18px; margin-bottom: 15px;">Zarządzanie Pracownikami</p>
+                <a href="/dashboard/add-employee/" style="background-color: #c5a059; color: white !important; border-radius: 3px; padding: 8px 15px; display: inline-block; font-weight: bold; font-size: 14px; text-decoration: none; margin-top: 10px;">
+                    DODAJ PRACOWNIKA
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
