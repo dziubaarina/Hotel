@@ -3,7 +3,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Author Register Page</title>
-  <!-- GOOGLE FONT -->
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;
@@ -11,38 +10,41 @@
     rel="stylesheet"
   />
    {% load static %}
-   <!-- Bootstrap Css -->
-  <link rel="stylesheet" href="{%static 'Allfiles/Css/bootstrap.min.css'%}">
-  <!-- Fontawesome Css -->
-   <link rel="stylesheet" href="{%static 'Allfiles/Css/fontawesome.min.css'%}">
+   <link rel="stylesheet" href="{%static 'Allfiles/Css/bootstrap.min.css'%}">
+  <link rel="stylesheet" href="{%static 'Allfiles/Css/fontawesome.min.css'%}">
 
-  <!-- all plugin Css-->
-
-   <!-- Style  Css -->
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/Style.css'%}">
-  <!-- Responsive  Css -->
+  <link rel="stylesheet" href="{%static 'Allfiles/Css/Style.css'%}">
   <link rel="stylesheet" href="{%static 'Allfiles/Css/Responsive.css'%}">
 </head>
-  <!--************************************
-			register part start
-		*************************************-->
-      <section id="slide">
+<body>
+  <section id="slide">
         <div class="login_bg1" style="background: url({%static 'Allfiles/photo/slider-2.jpg'%})">
           <div class="container">
             <div class="row">
               <div class="home-link text-center">
                 <p>
-                  <a href="{% url 'Home' %}">Home</a><i class="fas fa-angle-right"></i><a href="Athur_Register_Page.html">Register</a>
+                  <a href="{% url 'Home' %}">Home</a><i class="fas fa-angle-right"></i><a href="{% url 'Athur_Register' %}">Stwórz konto</a>
                 </p>
               </div>
               <div class="login_info">
                 <div class="col-lg-10">
                   <div class="login_txt1">
-                    <h2>Lucia <span> Hotel & Resort </span></h2>
-                    <h4>Register Here</h4>
+                    <h2>Aladu <span> Hotel </span></h2>
+                    <h4>Stwórz konto</h4>
                   </div>
                 </div>
-                <form method="post" action="">
+
+                <div class="col-lg-10">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p style="color: #ff4d4d; font-weight: bold; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 5px; text-align: center;">
+                                {{ message }}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <form method="post" action="{% url 'Athur_Register' %}">
                     {% csrf_token %}
                   <div class="from_info">
                     <div class="col-lg-10">
@@ -71,12 +73,14 @@
                       </div>
                     </div>
                     <div class="col-lg-10">
-                        <div class="row">
-                            <div  class="Register_btn" >
-                                <button type="submit">Register Now</button>
+                        <div class="row text-center w-100">
+                            <div class="Register_btn" style="width: 100%;">
+                                <button type="submit" style="width: 100%;">Stwórz konto</button>
                             </div>
-                            <div class="login_btn1">
-                                <a href="{% url 'Aothur_login' %}">Login Now</a>
+
+                            <div style="margin-top: 15px; width: 100%;">
+                                <span style="color: white;">Masz już konto?</span>
+                                <a href="{% url 'Aothur_login' %}" style="color: #c5a059; font-weight: bold; text-decoration: underline;">Zaloguj się</a>
                             </div>
                         </div>
                     </div>
@@ -88,15 +92,7 @@
         </div>
       </section>
 
-      <!--************************************
-			register part End
-		*************************************-->
-
-   <!--bootstrap js-->
-     <script src="{%static 'Allfiles/Js/bootstrap.bundle.min.js'%}"></script>
-  <!--jquary js-->
-     <script src="{%static 'Allfiles/Js/jquery-1.12.4.min.js'%}"></script>
-  <!--all plugin js-->
-  <!--main js-->
-   <script src="{%static 'Allfiles/Js/Script.js'%}"></script>
+      <script src="{%static 'Allfiles/Js/bootstrap.bundle.min.js'%}"></script>
+  <script src="{%static 'Allfiles/Js/jquery-1.12.4.min.js'%}"></script>
+  <script src="{%static 'Allfiles/Js/Script.js'%}"></script>
 </body>

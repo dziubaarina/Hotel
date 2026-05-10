@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-dev&h09slzzbp!j(f^_lsen+afmt_&cnl96uus15mqnjc68)60'
@@ -20,6 +21,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -61,12 +63,23 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-LANGUAGE_CODE = 'en-us'
+# USTAWIENIA JĘZYKOWE I REGIONALNE
+LANGUAGE_CODE = 'pl'
 TIME_ZONE = 'Europe/Warsaw'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+LANGUAGES = [
+    ('pl', _('Polish')),
+    ('en', _('English')),
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
+# USTAWIENIA PLIKÓW STATYCZNYCH
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
@@ -78,11 +91,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/admin/'
 LOGOUT_REDIRECT_URL = '/'
 
+# USTAWIENIA PANELU JAZZMIN
 JAZZMIN_SETTINGS = {
-    "site_title": "Lucia Admin",
-    "site_header": "Lucia Hotel",
-    "site_brand": "Lucia Hotel",
-    "welcome_sign": "Witaj w panelu zarządzania hotelem Lucia",
+    "site_title": "Aladu Admin",
+    "site_header": "Aladu Hotel",
+    "site_brand": "Aladu Hotel",
+    "welcome_sign": "Witaj w panelu zarządzania hotelem Aladu",
 
     "topmenu_links": [
         {"name": "Wróć na stronę główną", "url": "/", "new_window": False},

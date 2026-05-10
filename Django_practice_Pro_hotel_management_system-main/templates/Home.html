@@ -1,21 +1,120 @@
 {%extends 'allinclude.html'%}
- {% block title %}
-    Hotel & Resort
-		  {% endblock %}
+{% load i18n %}
+{% block title %}
+    Aladu {% trans "Hotel" %}
+{% endblock %}
 {% block contant %}
+{% load static %}
 
-    {% load static %}
-<!--================Slider Start=================-->
-   <section id="slider">
+<style>
+    /* 1. ZAREZERWOWANE MIEJSCE I CENTROWANIE KROPEK SLIDERA */
+    .ROOMS_info .room_slide,
+    .GALLERY_view .GALLERY_slider,
+    .Staff_view .Staff_slider {
+        position: relative !important;
+        padding-bottom: 70px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .ROOMS_info .slick-dots,
+    .GALLERY_view .slick-dots,
+    .Staff_view .slick-dots {
+        position: absolute !important;
+        bottom: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+    }
+    .ROOMS_info .slick-dots li,
+    .GALLERY_view .slick-dots li,
+    .Staff_view .slick-dots li {
+        margin: 0 6px !important;
+        display: inline-block !important;
+    }
+
+    /* 2. ZŁOTY PRZYCISK REZERWACJI NA KARTACH POKOI */
+    .ROOMS_pic {
+        position: relative !important;
+    }
+    .my-custom-button-box {
+        position: absolute !important;
+        bottom: -20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 10 !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    .ROOMS_text {
+        padding-top: 35px !important;
+    }
+    .btn-zarezerwuj {
+        background-color: #c5a059 !important;
+        color: #000 !important;
+        padding: 14px 35px !important;
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1.5px !important;
+        border-radius: 2px !important;
+        border: none !important;
+        display: inline-block !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease-in-out !important;
+        white-space: nowrap !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15) !important;
+        margin: 0 !important;
+        line-height: normal !important;
+        height: auto !important;
+        width: auto !important;
+    }
+    .btn-zarezerwuj:hover {
+        background-color: #111 !important;
+        color: #c5a059 !important;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
+    }
+
+    /* 3. BEZPIECZNE OKRĄGŁE IKONY USŁUG */
+    .service-icon img {
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+
+    /* 4. NAPRAWA ROZCIĄGNIĘTYCH ZDJĘĆ W GALERII I PERSONELU */
+    .Staff_pic, .GALLERY_pic {
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+    .Staff_pic {
+        height: 380px !important;
+    }
+    .GALLERY_pic {
+        height: 280px !important;
+    }
+    .Staff_pic img, .GALLERY_pic img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center top !important;
+    }
+</style>
+
+<section id="slider">
          <div class="slider_pic" style="background: url({%static 'Allfiles/photo/slider-1.jpg'%})">
             <div class="container">
                 <div class="row justify-content-center text-center">
                    <div class="col-md-10">
                       <div class="slide_text">
-                         <h1 >welcome <span class="late">to Hotel Lucia</span> </h1>
-                         <p> Welcome to Hotel Booking Management, your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area.</p>
+                         <h1 >{% trans "welcome to" %} <span class="late">Aladu Hotel</span> </h1>
+                         <p> {% trans "Welcome to Hotel Booking Management, your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area." %}</p>
                           <div class="slider-btn">
-                               <a class="default-btn" href="#" >explore</a>
+                               <a class="default-btn" href="#OUR_ROOMS" >{% trans "explore" %}</a>
                           </div>
                         </div>
                    </div>
@@ -34,10 +133,10 @@
                 <div class="row justify-content-center text-center">
                    <div class="col-md-10">
                       <div class="slide_text">
-                         <h2>Enjoy a luxury experience</h2>
-                         <h4> Hotel & Resort</h4>
+                         <h2>{% trans "Enjoy a luxury experience" %}</h2>
+                         <h4> {% trans "Hotel" %}</h4>
                           <div class="slider-btn">
-                               <a class="default-btn" href="#" >explore</a>
+                               <a class="default-btn" href="#OUR_ROOMS" >{% trans "explore" %}</a>
                           </div>
                         </div>
                    </div>
@@ -56,10 +155,10 @@
                 <div class="row justify-content-center text-center">
                    <div class="col-md-10">
                       <div class="slide_text">
-                         <h2>Spend Quality Holidays With Us</h2>
-                         <p>The best way to spend your precious time and cherish every moment with your loved ones. Join Today!</p>
+                         <h2>{% trans "Spend Quality Holidays With Us" %}</h2>
+                         <p>{% trans "The best way to spend your precious time and cherish every moment with your loved ones. Join Today!" %}</p>
                           <div class="slider-btn">
-                               <a class="default-btn" href="#" >explore</a>
+                               <a class="default-btn" href="#OUR_ROOMS" >{% trans "explore" %}</a>
                           </div>
                         </div>
                    </div>
@@ -74,57 +173,6 @@
          </div>
    </section>
 
-
-    <!--================Book A Table Area =================-->
-    <section id="Book_Table">
-       <div class="container">
-          <div class="row">
-             <div class="col-lg-12">
-               <form>
-                  <div class="Book_info">
-                     <div class="Table_item">
-                        <input type="text" placeholder="Check in" class="Check_in" >
-                        <span class="open"><i class="far fa-calendar-alt"></i></span>
-                     </div>
-                      <div class="Table_item" >
-                        <input type="text" placeholder="Check out" class="Check_out" >
-                        <span class="open1"><i class="far fa-calendar-alt"></i></span>
-                     </div>
-                     <div class="Table_item">
-                         <select name="adults">
-                            <option>ADULTS</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                         </select>
-                     </div>
-                     <div class="Table_item">
-                           <select name="children">
-                              <option>CHILDREN</option>
-                              <option>0</option>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                           </select>
-                      </div>
-                      <div class="Table_item">
-                         <div class="book_btn">
-                           <a href="#">Check Availability</a>
-                         </div>
-                    </div>
-                  </div>
-               </form>
-             </div>
-          </div>
-       </div>
-    </section>
-
-     <!--================About Part=================-->
      <section id="about">
         <div class="container">
            <div class="row">
@@ -136,27 +184,23 @@
               </div>
                <div class="col-lg-4">
                  <div class="About_info">
-                   <h2 class="about-title">About Us</h2>
-                      <p>Welcome to Hotel Booking Management, your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area.</p>
-                      <p>This is such a great place to connect and spend your free time in peace.</p>
-                      <p>Hope you enjoy our services.</p>
-                     <div class="about_btn">
-                     <a href="#" class="read-more">READ MORE </a>
-                     </div>
-                 </div>
+                   <h2 class="about-title">{% trans "About Us" %}</h2>
+                      <p>{% trans "Welcome to Hotel Booking Management, your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area." %}</p>
+                      <p>{% trans "This is such a great place to connect and spend your free time in peace." %}</p>
+                      <p>{% trans "Hope you enjoy our services." %}</p>
+                      </div>
               </div>
            </div>
         </div>
      </section>
 
-    <!--================EXPLOR OUR ROOMS=================-->
     <section id="OUR_ROOMS">
        <div class="container">
           <div class="row justify-content-center text-center">
              <div class="col-lg-8">
                 <div class="ROOMS_Title">
-                   <h2>EXPLORE OUR ROOMS</h2>
-                   <p>Welcome to your one stop 5 star rated hotel with all the luxuries you ever need. This is your time. Enjoy!</p>
+                   <h2>{% trans "EXPLORE OUR ROOMS" %}</h2>
+                   <p>{% trans "Welcome to your one stop 5 star rated hotel with all the luxuries you ever need. This is your time. Enjoy!" %}</p>
                 </div>
              </div>
           </div>
@@ -165,124 +209,114 @@
                 <div class="col-lg-4">
                    <div class="rooms-view">
                      <div class="ROOMS_pic">
-
                        <img src="{%static 'Allfiles/Photo/room-1.jpg'%}" alt="img">
-                       <div class="btn ">
-                          <div class="room_btn">
-                            <a href="#">Booking Now</a>
-                          </div>
+                       <div class="my-custom-button-box">
+                            <a href="{% url 'OnlineBooking' %}" class="btn-zarezerwuj">{% trans "BOOKING Now" %}</a>
                        </div>
                      </div>
                      <div class="ROOMS_text text-center justify-content-center">
-                         <h3> Couple Room </h3>
+                         <h3> {% trans "Couple Room" %} </h3>
                          <span><i class="fas fa-dollar-sign"></i>300</span>
-                         <p>Best room to consider for newly weds. Feels like a luxorious suite. Ratings: 4.6/5</p>
+                         <p>{% trans "Best room to consider for newly weds. Feels like a luxorious suite. Ratings: 4.6/5" %}</p>
                           <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                      </div>
                   </div>
                 </div>
+
                 <div class="col-lg-4">
                    <div class="rooms-view">
                      <div class="ROOMS_pic">
                        <img src=" {%static 'Allfiles/Photo/room-2.jpg'%}" alt="img">
-                       <div class="btn ">
-                          <div class="room_btn">
-                            <a href="#">Booking Now</a>
-                          </div>
+                       <div class="my-custom-button-box">
+                            <a href="{% url 'OnlineBooking' %}" class="btn-zarezerwuj">{% trans "BOOKING Now" %}</a>
                        </div>
                      </div>
                      <div class="ROOMS_text text-center justify-content-center">
-                         <h3> Single Room </h3>
+                         <h3> {% trans "Single Room" %} </h3>
                          <span><i class="fas fa-dollar-sign"></i>250</span>
-                         <p>One of the best rooms that provide valuable alone time, also comes with a lot of features. Ratings: 4.5/5</p>
+                         <p>{% trans "One of the best rooms that provide valuable alone time, also comes with a lot of features. Ratings: 4.5/5" %}</p>
                           <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                      </div>
                   </div>
                 </div>
+
                 <div class="col-lg-4">
                    <div class="rooms-view">
                      <div class="ROOMS_pic">
                        <img src="{%static 'Allfiles/Photo/room-3.jpg'%}" alt="img">
-                       <div class="btn ">
-                          <div class="room_btn">
-                            <a href="#">Booking Now</a>
-                          </div>
+                       <div class="my-custom-button-box">
+                            <a href="{% url 'OnlineBooking' %}" class="btn-zarezerwuj">{% trans "BOOKING Now" %}</a>
                        </div>
                      </div>
                      <div class="ROOMS_text text-center justify-content-center">
-                         <h3> Double Room </h3>
+                         <h3> {% trans "Double Room" %} </h3>
                          <span><i class="fas fa-dollar-sign"></i>310</span>
-                         <p>Comes with an extra balcony and child space. Best for adults & children. Rating: 4.5/5</p>
+                         <p>{% trans "Comes with an extra balcony and child space. Best for adults & children. Rating: 4.5/5" %}</p>
                           <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                      </div>
                   </div>
                 </div>
+
                 <div class="col-lg-4">
                    <div class="rooms-view">
                      <div class="ROOMS_pic">
                        <img src="{%static 'Allfiles/Photo/room-4.jpg'%}" alt="img">
-                       <div class="btn ">
-                          <div class="room_btn">
-                            <a href="#">Booking Now</a>
-                          </div>
+                       <div class="my-custom-button-box">
+                            <a href="{% url 'OnlineBooking' %}" class="btn-zarezerwuj">{% trans "BOOKING Now" %}</a>
                        </div>
                      </div>
                      <div class="ROOMS_text text-center justify-content-center">
-                         <h3> Luxury Room </h3>
+                         <h3> {% trans "Luxury Room" %} </h3>
                          <span><i class="fas fa-dollar-sign"></i>350</span>
-                         <p>One of our top rated stay. Availlable at discount price 25% and with a free spa coupon. Ratings: 4.8/5</p>
+                         <p>{% trans "One of our top rated stay. Availlable at discount price 25% and with a free spa coupon. Ratings: 4.8/5" %}</p>
                           <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                      </div>
                   </div>
                 </div>
+
                 <div class="col-lg-4">
                    <div class="rooms-view">
                      <div class="ROOMS_pic">
                        <img src="{%static 'Allfiles/Photo/room-5.jpg'%}" alt="img">
-                       <div class="btn ">
-                          <div class="room_btn">
-                            <a href="#">Booking Now</a>
-                          </div>
+                       <div class="my-custom-button-box">
+                            <a href="{% url 'OnlineBooking' %}" class="btn-zarezerwuj">{% trans "BOOKING Now" %}</a>
                        </div>
                      </div>
                      <div class="ROOMS_text text-center justify-content-center">
-                         <h3>Family Room </h3>
+                         <h3>{% trans "Family Room" %} </h3>
                          <span><i class="fas fa-dollar-sign"></i>400</span>
-                         <p>Highly recommended to parents with toddlers and babies.Offers available. Ratins: 4.6/5</p>
+                         <p>{% trans "Highly recommended to parents with toddlers and babies.Offers available. Ratins: 4.6/5" %}</p>
                           <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                      </div>
                   </div>
                 </div>
+
                 <div class="col-lg-4">
                    <div class="rooms-view">
                      <div class="ROOMS_pic">
                        <img src="{%static 'Allfiles/Photo/room-6.jpg'%}" alt="img">
-                       <div class="btn ">
-                          <div class="room_btn">
-                            <a href="#">Booking Now</a>
-                          </div>
+                       <div class="my-custom-button-box">
+                            <a href="{% url 'OnlineBooking' %}" class="btn-zarezerwuj">{% trans "BOOKING Now" %}</a>
                        </div>
                      </div>
                      <div class="ROOMS_text text-center justify-content-center">
-                         <h3> Presidential Room </h3>
+                         <h3> {% trans "Presidential Room" %} </h3>
                          <span><i class="fas fa-dollar-sign"></i>300</span>
-                         <p>Our top uxury room. Only availabe for VIP's with verified identity. Ratings: 4.7/5</p>
+                         <p>{% trans "Our top uxury room. Only availabe for VIP's with verified identity. Ratings: 4.7/5" %}</p>
                           <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                      </div>
                   </div>
                 </div>
-               </div>
            </div>
        </div>
     </section>
 
-    <!--================OUR AWESOME SERVICES=================-->
     <section id="Service">
           <div class="container">
             <div class="row text-center justify-content-center">
                 <div class="col-lg-12">
                      <div class="Service_title">
-                         <h2>OUR AWESOME SERVICES </h2>
+                         <h2>{% trans "OUR AWESOME SERVICES" %} </h2>
                      </div>
                 </div>
             </div>
@@ -312,11 +346,10 @@
                              <li class="Service_items" rel="#swim">
                                  <a href="#swim">
                                     <span class="service-icon">
-
                                         <img src="{%static 'Allfiles/Photo/swim.png'%}" alt="img">
                                     </span>
-                                    <h5 class="service-menu-title" rel="#swim">Swimming Pool</h5>
-                                    <p class="text"><span>Swimming Pool</span> This is our swimming pool. Our services are proven one of the best. </p>
+                                    <h5 class="service-menu-title" rel="#swim">{% trans "Swimming Pool" %}</h5>
+                                    <p class="text"><span>{% trans "Swimming Pool" %}</span> {% trans "This is our swimming pool. Our services are proven one of the best." %} </p>
                                 </a>
                              </li>
                               <li class="Service_items1" rel="#spa">
@@ -324,28 +357,26 @@
                                     <span class="service-icon" >
                                         <img src="{%static 'Allfiles/Photo/spa.png'%}" alt="img">
                                     </span>
-                                    <h5 class="service-menu-title" rel="#spa">Spa, beauty & Health</h5>
-                                    <p class="text"><span>Spa and beauty</span> This is our spa, beauty and health. Our services are proven one of the best. </p>
+                                    <h5 class="service-menu-title" rel="#spa">{% trans "Spa, beauty & Health" %}</h5>
+                                    <p class="text"><span>{% trans "Spa, beauty & Health" %}</span> {% trans "This is our spa, beauty and health. Our services are proven one of the best." %} </p>
                                 </a>
                              </li>
                               <li class="Service_items2"  rel="#Restaurant">
                                  <a  href="#Restaurant">
                                     <span class="service-icon">
-
                                         <img src=" {%static 'Allfiles/Photo/restaurent.png'%}" alt="">
                                     </span>
-                                    <h5 class="service-menu-title"  rel="#Restaurant">Restaurant</h5>
-                                    <p class="text"><span>Restaurant</span> This is our restaurant. Our services are proven one of the best. </p>
+                                    <h5 class="service-menu-title"  rel="#Restaurant">{% trans "Restaurant" %}</h5>
+                                    <p class="text"><span>{% trans "Restaurant" %}</span> {% trans "This is our restaurant. Our services are proven one of the best." %} </p>
                                 </a>
                              </li>
                               <li class="Service_items3" rel="#Conference">
                                  <a href="#Conference">
                                     <span class="service-icon">
-
                                         <img src="  {%static 'Allfiles/Photo/conference.png'%}" alt="">
                                     </span>
-                                    <h5 class="service-menu-title" rel="#Conference">Conference Hall</h5>
-                                    <p class="text"><span>Conference</span> This is our conference hall. Our services are proven one of the best. </p>
+                                    <h5 class="service-menu-title" rel="#Conference">{% trans "Conference Hall" %}</h5>
+                                    <p class="text"><span>{% trans "Conference Hall" %}</span> {% trans "This is our conference hall. Our services are proven one of the best." %} </p>
                                 </a>
                              </li>
                         </ul>
@@ -356,14 +387,13 @@
     </section>
 
 
-<!--================OUR GALLERY=================-->
 <section id="GALLERY">
    <div class="container">
        <div class="row text-center justify-content-center">
           <div class="col-lg-8">
               <div class="GALLERY_title">
-                <h2>OUR GALLERY</h2>
-                <p>This is your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area.</p>
+                <h2>{% trans "OUR GALLERY" %}</h2>
+                <p>{% trans "This is your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area." %}</p>
                </div>
           </div>
        </div>
@@ -443,8 +473,6 @@
        </div>
    </div>
 </section>
-    <!--================Counter Part Start=================-->
-
     <section id="Counter" style="background:url({%static 'Allfiles/photo/bg1.jpg'%})">
        <div class="container">
           <div class="row">
@@ -454,28 +482,28 @@
                         <div class="Counter_info1">
                             <span><i class="fas fa-user"></i></span>
                             <h2 class="counter">1100+</h2>
-                            <p>Happy Clients </p>
+                            <p>{% trans "Happy Clients" %} </p>
                         </div>
                      </div>
                      <div class="col-lg-3 text-center">
                         <div class="Counter_info1">
                             <span><i class="fas fa-user-friends"></i></span>
                             <h2 class="counter">700+</h2>
-                            <p>New Friendships </p>
+                            <p>{% trans "New Friendships" %} </p>
                         </div>
                      </div>
                      <div class="col-lg-3 text-center">
                         <div class="Counter_info1">
                             <span><i class="fas fa-star"></i></span>
                             <h2 class="counter">300</h2>
-                            <p>Five Start Ratings</p>
+                            <p>{% trans "Five Start Ratings" %}</p>
                         </div>
                      </div>
                      <div class="col-lg-3 text-center">
                         <div class="Counter_info1">
                             <span ><i class="fas fa-coffee"></i></span>
                             <h2 class="counter">900+</h2>
-                            <p>Served Breakfast</p>
+                            <p>{% trans "Served Breakfast" %}</p>
                         </div>
                      </div>
                </div>
@@ -483,16 +511,13 @@
           </div>
        </div>
     </section>
-    <!--================Counter Part End=================-->
-
-   <!--================Our Special Staff Part start =================-->
-   <section id="Staff">
+    <section id="Staff">
    <div class="container">
        <div class="row text-center justify-content-center">
           <div class="col-lg-8">
               <div class="Staff_title">
-                <h2>OUR SPECIAL STAFF</h2>
-                <p>This is your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area.</p>
+                <h2>{% trans "OUR SPECIAL STAFF" %}</h2>
+                <p>{% trans "This is your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area." %}</p>
                </div>
           </div>
        </div>
@@ -505,13 +530,11 @@
                      <div class="Staff_overly">
                          <div class="Staff_part1 text-center">
                             <h5>Shirley Gibson</h5>
-                            <h6>Manager</h6>
+                            <h6>{% trans "Manager" %}</h6>
                          </div>
                          <div class="Staff_part2 text-center">
                             <ul>
                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></i></a></li>
-                                <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                          </div>
@@ -524,13 +547,11 @@
                      <div class="Staff_overly">
                          <div class="Staff_part1 text-center">
                             <h5>Ronald Long</h5>
-                            <h6>Chif Reciption Officer</h6>
+                            <h6>{% trans "Reception Officer" %}</h6>
                          </div>
                          <div class="Staff_part2 text-center">
                             <ul>
                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></i></a></li>
-                                <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                          </div>
@@ -543,13 +564,11 @@
                      <div class="Staff_overly">
                          <div class="Staff_part1 text-center">
                             <h5>Ashley Sanchez</h5>
-                            <h6>Master Chef</h6>
+                            <h6>{% trans "Master Chef" %}</h6>
                          </div>
                          <div class="Staff_part2 text-center">
                             <ul>
                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></i></a></li>
-                                <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                          </div>
@@ -562,13 +581,11 @@
                      <div class="Staff_overly">
                          <div class="Staff_part1 text-center">
                             <h5>Jessica Watson</h5>
-                            <h6>Housekeeping</h6>
+                            <h6>{% trans "Housekeeping" %}</h6>
                          </div>
                          <div class="Staff_part2 text-center">
                             <ul>
                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></i></a></li>
-                                <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                          </div>
@@ -581,13 +598,11 @@
                      <div class="Staff_overly">
                          <div class="Staff_part1 text-center">
                             <h5>Shirley Gibson</h5>
-                            <h6>Manager</h6>
+                            <h6>{% trans "Manager" %}</h6>
                          </div>
                          <div class="Staff_part2 text-center">
                             <ul>
                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></i></a></li>
-                                <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                          </div>
@@ -597,5 +612,17 @@
        </div>
    </div>
 </section>
-    <!--================Our Special Staff Part end =================-->
- {% endblock %}
+
+<script>
+    window.addEventListener('load', function() {
+        if(window.jQuery && $.fn.datetimepicker) {
+            $('.Check_in, .Check_out').datetimepicker('destroy');
+            $('.Check_in, .Check_out').datetimepicker({
+                timepicker: false,
+                format: 'Y-m-d',
+                minDate: 0
+            });
+        }
+    });
+</script>
+{% endblock %}

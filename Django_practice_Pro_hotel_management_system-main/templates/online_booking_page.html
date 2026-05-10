@@ -1,19 +1,19 @@
 {%extends 'allinclude.html'%}
+{% load i18n %}
  {% block title %}
-   Online Booking page
-		  {% endblock %}
+   Online Booking - Aladu Hotel
+{% endblock %}
 {% block contant %}
 
     {% load static %}
-<!--================Slider Start=================-->
-   <section id="slider_booking">
+<section id="slider_booking">
          <div class="slider_book_Pic"style="background: url({%static 'Allfiles/photo/slider-1.jpg'%})">
             <div class="container">
                 <div class="row justify-content-center text-center">
                    <div class="col-md-10">
                       <div class="slider_booking_text">
-                           <h4>HOTEL SERVICE</h4>
-                           <a href="{% url 'Home' %}">Home</a> <i class="fas fa-slash"></i> <a href="">Online Booking</a>
+                           <h4>{% trans "HOTEL SERVICE" %}</h4>
+                           <a href="{% url 'Home' %}">{% trans "Home" %}</a> <i class="fas fa-slash"></i> <a href="">{% trans "Online Booking" %}</a>
                         </div>
                    </div>
                 </div>
@@ -21,134 +21,121 @@
          </div>
    </section>
 
-  <!--================Booking part  Start=================-->
   <section id="Booking_part">
      <div class="container">
+
+          {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center" style="font-weight: bold;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+          {% endif %}
+
           <div class="row">
             <div class="col-lg-4">
                <div class="BOOKING_DETAILS">
                    <div class="BOOKING_title">
-                     <h2>BOOKING DETAILS</h2>
-                     <p>Selected Room</p>
+                     <h2>{% trans "BOOKING DETAILS" %}</h2>
+                     <p>{% trans "Selected Room" %}</p>
                    </div>
-                   <div class="BOOKING_pic">
-                     <img src="{%static 'Allfiles/Photo/room-3.jpg'%}">
-                     <h4>Double Room</h4>
-                     <span><i class="fas fa-dollar-sign"></i>310/per nignt</span>
+
+                   <div style="display: flex; align-items: center; margin-bottom: 25px; margin-top: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                     <img id="dynamic-img" src="{%static 'Allfiles/Photo/room-1.jpg'%}" style="width: 120px; height: 85px; object-fit: cover; border-radius: 5px; flex-shrink: 0; margin-right: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                     <div style="display: flex; flex-direction: column;">
+                         <h4 id="dynamic-name" style="margin: 0 0 5px 0; font-size: 1.1rem; font-weight: 700; line-height: 1.3; color: #333;">{% trans "Select Room Requirements" %}</h4>
+                         <span style="color: #c5a059; font-weight: bold; font-size: 1.2rem;"><i class="fas fa-dollar-sign"></i><span id="dynamic-price">0</span> <span style="color: #777; font-weight: normal; font-size: 0.85rem;">/ {% trans "per night" %}</span></span>
+                     </div>
                    </div>
-                   <div class="BOOKING_room_info">
-                        <div class="BOOKING_room">
-                           <h4>CHECK IN</h4>
-                           <span>1/7/2021</span>
-                        </div>
-                        <div class="BOOKING_room">
-                           <h4>ADULT</h4>
-                           <span>2</span>
-                        </div>
-                         <div class="BOOKING_room">
-                           <h4>NIGHT</h4>
-                           <span>4</span>
-                        </div>
-                  </div>
+
                    <div class="BOOKING_room_info1">
                         <div class="BOOKING_room">
-                           <h4>ADULT</h4>
-                           <span>2</span>
+                           <h4>{% trans "NIGHT" %}</h4>
+                           <span id="dynamic-nights">0</span>
                         </div>
                         <div class="BOOKING_room1">
-                           <h4>CHILDREN</h4>
-                           <span>3</span>
-                        </div>
-                        <div class="BOOKING_room1">
-                           <h4>TOTAL PRICE</h4>
-                           <span><i class="fas fa-dollar-sign"></i>310</span>
+                           <h4>{% trans "TOTAL PRICE" %}</h4>
+                           <span><i class="fas fa-dollar-sign"></i><span id="dynamic-total">0</span></span>
                         </div>
                   </div>
                </div>
+
                <div class="BOOKING_help">
                   <div class="BOOKING_help_title">
-                     <h3>NEED HELP FOR BOOKING !</h3>
-                     <p>Help</p>
+                     <h3>{% trans "NEED HELP FOR BOOKING !" %}</h3>
                   </div>
                   <div class="BOOKING_help_icon">
                      <p><i class="fas fa-mobile-alt"></i></p>
                      <span>9182285606</span>
-                     <h6>hotellucia@gamil.com</h6>
+                     <h6>hotelaladu@gmail.com</h6>
                   </div>
                </div>
             </div>
+
             <div class="col-lg-8">
                <div class="BOOKING_from">
                   <div class="BOOKING_from_title">
-                     <h3>PERSONAL INFORMATION</h3>
-                     <span>Booking form</span>
-                     <p>Welcome to Hotel Booking Management, your one-stop solution for hassle-free hotel reservations.Quickly find the perfect hotel for your next stay. Use our search tool to browse and book hotels in the area.</p>
+                     <h3>{% trans "PERSONAL INFORMATION" %}</h3>
+                     <span>{% trans "Booking form" %}</span>
                   </div>
                   <div class="BOOKING_from_info">
-                     <form method="POST" action="" enctype="multipart/form-data">
+                     <form method="POST" action="">
                           {% csrf_token %}
                         <div class="from_info1">
+
                            <div class="form-group1">
-                              <input type="text" name="Check_in" class="form-control"  placeholder="Check in"  required/>
+                               <select class="form-control" name="Room_Type" id="room-selector" required>
+                                 <option value="" disabled selected>{% trans "Select Room Requirements" %}</option>
+                                 <option value="Single" data-price="250" data-img="{%static 'Allfiles/Photo/room-2.jpg'%}" data-name="Single Room">{% trans "Single Room" %} ($250)</option>
+                                 <option value="Double" data-price="310" data-img="{%static 'Allfiles/Photo/room-3.jpg'%}" data-name="Double Room">{% trans "Double Room" %} ($310)</option>
+                                 <option value="Luxury" data-price="350" data-img="{%static 'Allfiles/Photo/room-4.jpg'%}" data-name="Luxury Room">{% trans "Luxury Room" %} ($350)</option>
+                                 <option value="Family" data-price="400" data-img="{%static 'Allfiles/Photo/room-5.jpg'%}" data-name="Family Room">{% trans "Family Room" %} ($400)</option>
+                               </select>
+                           </div>
+
+                           <div class="form-group1">
+                              <input type="date" name="Check_in" id="check-in-date" class="form-control" required/>
                            </div>
                            <div class="form-group1">
-                              <input type="text"  name="Check_out" class="form-control" placeholder="Check out"  required/>
+                              <input type="date" name="Check_out" id="check-out-date" class="form-control" required/>
                            </div>
+
                            <div class="form-group1">
                                <select class="form-control" name="ADULT">
-                                 <option value="ADULT">ADULT</option>
-                                 <option value="1 ADULT">1 ADULT</option>
-                                 <option value="2 ADULT">2 ADULT</option>
-                                 <option value="3 ADULT">3 ADULT</option>
-                                 <option value="4 ADULT">4 ADULT</option>
+                                 <option value="1">1 {% trans "ADULT" %}</option>
+                                 <option value="2">2 {% trans "ADULT" %}</option>
+                                 <option value="3">3 {% trans "ADULT" %}</option>
                                </select>
                            </div>
                            <div class="form-group1">
                               <select class="form-control" name="CHILDREN">
-                                 <option value="CHILDREN">CHILDREN</option>
-                                 <option value="1 CHILDREN">1 CHILDREN</option>
-                                 <option value="2 CHILDREN">2 CHILDREN</option>
-                                 <option value="3 CHILDREN">3 CHILDREN</option>
-                                 <option value="4 CHILDREN">4 CHILDREN</option>
+                                 <option value="0">0 {% trans "CHILDREN" %}</option>
+                                 <option value="1">1 {% trans "CHILDREN" %}</option>
+                                 <option value="2">2 {% trans "CHILDREN" %}</option>
                                </select>
                            </div>
                            <div class="form-group1">
-                              <input type="text" name="Name" class="form-control" placeholder="Name" required />
+                              <input type="text" name="Name" class="form-control" placeholder="{% trans 'Name' %}" required />
                            </div>
                            <div class="form-group1">
-                              <input type="text" name="Surname" class="form-control" placeholder="Surname" required />
+                              <input type="text" name="Surname" class="form-control" placeholder="{% trans 'Surname' %}" required />
                            </div>
                            <div class="form-group1">
-                              <input type="text" name="Email" class="form-control" placeholder="Email" required />
+                              <input type="email" name="Email" class="form-control" placeholder="{% trans 'Email' %}" required />
                            </div>
                            <div class="form-group1">
-                              <input type="text" name="Phone_Number" class="form-control" placeholder="Phone Number" required />
+                              <input type="text" name="Phone_Number" class="form-control" placeholder="{% trans 'Phone Number' %}" required />
                            </div>
-                           <div class="form-group1">
-                              <input type="text" name="City" class="form-control" placeholder="City" required />
-                           </div>
-                           <div class="form-group1">
-                              <input type="text" name="Country" class="form-control" placeholder="Country" required />
-                           </div>
-                             <div class="form-group1">
-                              <input type="text" name="Nid_No" class="form-control" placeholder="Nid No" required />
-                           </div>
-                           <div class="form-group1">
-                              <input type="file" name="Img" class="form-control" placeholder="Img" required />
-                           </div>
-                           <div class="form-group1">
-                            <textarea name="Address"  placeholder="Address"></textarea>
-                           </div>
+                        </div>
 
-                        </div>
                         <div class="checkbox3">
-                          <input type="checkbox" name="check" required/><label for="">I Agree The Terms & Condition</label>
+                          <input type="checkbox" name="check" required/><label for="">{% trans "I Agree The Terms & Condition" %}</label>
                         </div>
-                        <div  class="onlineBooking_btn" >
-                           <button type="submit" >BOOKING Now</button>
+                        <div class="onlineBooking_btn">
+                           <button type="submit">{% trans "BOOKING Now" %}</button>
                         </div>
-                        <div  class="onlineBooking_btn" >
-                           <button type="reset">Reset</button>
+                        <div class="onlineBooking_btn">
+                           <button type="reset">{% trans "Reset" %}</button>
                         </div>
                      </form>
                   </div>
@@ -158,5 +145,50 @@
      </div>
   </section>
 
-  <!--================Booking part end=================-->
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const roomSelector = document.getElementById('room-selector');
+          const checkInInput = document.getElementById('check-in-date');
+          const checkOutInput = document.getElementById('check-out-date');
+
+          const imgEl = document.getElementById('dynamic-img');
+          const nameEl = document.getElementById('dynamic-name');
+          const priceEl = document.getElementById('dynamic-price');
+          const totalEl = document.getElementById('dynamic-total');
+          const nightsEl = document.getElementById('dynamic-nights');
+
+          function calculateTotal() {
+              const selectedOption = roomSelector.options[roomSelector.selectedIndex];
+              if (!selectedOption.value) return;
+
+              imgEl.src = selectedOption.getAttribute('data-img');
+              nameEl.textContent = selectedOption.getAttribute('data-name');
+
+              const basePrice = parseFloat(selectedOption.getAttribute('data-price'));
+              priceEl.textContent = basePrice;
+
+              let nights = 0;
+              if (checkInInput.value && checkOutInput.value) {
+                  const checkInDate = new Date(checkInInput.value);
+                  const checkOutDate = new Date(checkOutInput.value);
+
+                  const diffTime = checkOutDate - checkInDate;
+
+                  if (diffTime > 0) {
+                      nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                  }
+              }
+
+              const finalNights = nights > 0 ? nights : 1;
+
+              nightsEl.textContent = nights > 0 ? nights : 0;
+              totalEl.textContent = basePrice * finalNights;
+          }
+
+          roomSelector.addEventListener('change', calculateTotal);
+          checkInInput.addEventListener('change', calculateTotal);
+          checkOutInput.addEventListener('change', calculateTotal);
+      });
+  </script>
+
   {% endblock %}

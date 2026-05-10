@@ -1,74 +1,94 @@
 <!DOCTYPE html>
+{% load i18n %}
+{% load static %}
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Author Login Page</title>
+  <title>Zaloguj się - Aladu Hotel</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-  {% load static %}
   <link rel="stylesheet" href="{%static 'Allfiles/Css/bootstrap.min.css'%}">
   <link rel="stylesheet" href="{%static 'Allfiles/Css/fontawesome.min.css'%}">
   <link rel="stylesheet" href="{%static 'Allfiles/Css/Style.css'%}">
   <link rel="stylesheet" href="{%static 'Allfiles/Css/Responsive.css'%}">
 </head>
 <body>
-      <section id="slide">
-        <div class="login_bg_Pic" style="background: url({%static 'Allfiles/photo/slider-5.jpg'%})">
-          <div class="container">
-            <div class="row">
-              <div class="home-link text-center">
-                <p>
-                  <a href="{% url 'Home' %}">Home</a><i class="fas fa-angle-right"></i><a href="#">Login</a>
-                </p>
+  <section id="slide">
+    <div class="login_bg1" style="background: url({%static 'Allfiles/photo/slider-5.jpg'%})">
+      <div class="container">
+        <div class="row">
+          <div class="home-link text-center">
+            <p>
+              <a href="{% url 'Home' %}">Home</a><i class="fas fa-angle-right"></i><a href="{% url 'Aothur_login' %}">Zaloguj się</a>
+            </p>
+          </div>
+          <div class="login_info">
+            <div class="col-lg-10">
+              <div class="login_txt1">
+                <h2>Aladu <span> Hotel </span></h2>
+                <h4>Zaloguj się</h4>
               </div>
-              <div class="login_info text-center">
-                <div class="col-lg-10 text-center">
-                  <div class="login_txt text-center">
-                    <h2> Lucia <span> Hotel & Resort </span></h2>
-                    <h4>Zaloguj się do panelu zarządzania</h4>
+            </div>
+
+            <div class="col-lg-10">
+              {% if messages %}
+                {% for message in messages %}
+                  <p style="color: #c5a059; font-weight: bold; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 5px; text-align: center;">
+                    {{ message }}
+                  </p>
+                {% endfor %}
+              {% endif %}
+
+              {% if error %}
+                <p style="color: #ff4d4d; font-weight: bold; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 5px; text-align: center;">
+                  {{ error }}
+                </p>
+              {% endif %}
+            </div>
+
+            <form method="POST" action="{% url 'Aothur_login' %}">
+              {% csrf_token %}
+              <div class="from_info">
+                <div class="col-lg-10">
+                  <div class="form-group">
+                    <input type="text" name="Email" class="form-control" placeholder="E-mail lub Login *" required/>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" name="Password" class="form-control" placeholder="Hasło *" required/>
                   </div>
                 </div>
 
-                <form method="post" action="{% url 'Aothur_login' %}">
-                  {% csrf_token %}
+                <div class="col-lg-10">
+                  <div class="checkbox2">
+                    <input type="checkbox" id="keep" /><label for="keep">Zapamiętaj mnie</label>
+                  </div>
+                </div>
 
-                  {% if error %}
-                  <div class="col-lg-10 text-center">
-                      <p style="color: #ff4d4d; font-weight: bold; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 5px;">{{ error }}</p>
-                  </div>
-                  {% endif %}
+                <div class="col-lg-10">
+                  <div class="row text-center w-100">
+                    <div class="Register_btn" style="width: 100%;">
+                      <button type="submit" style="width: 100%;">ZALOGUJ SIĘ</button>
+                    </div>
 
-                  <div class="col-lg-10">
-                    <div class="login_email">
-                      <input type="email" name="Email" placeholder="Enter Email (np. admin@gmail.com)" required/>
+                    <div style="margin-top: 10px; width: 100%; text-align: right;">
+                      <a href="#" style="color: #c5a059; font-size: 13px; text-decoration: underline;">Zapomniałeś hasła?</a>
                     </div>
-                  </div>
-                  <div class="col-lg-10">
-                    <div class="login_pass">
-                      <input type="password" name="Password" placeholder="Enter Password" required/>
-                    </div>
-                  </div>
-                  <div class="col-lg-10">
-                    <div class="checkbox1">
-                      <input type="checkbox" /><label for="checkbox1">Keep me logged in</label>
-                    </div>
-                    <div class="forget_pass">
-                      <a href="#" class="">Forgot Password</a>
-                    </div>
-                  </div>
-                  <div class="col-lg-10">
-                    <div class="login_btn">
-                      <button type="submit" class="">Log in</button>
-                    </div>
-                  </div>
-                </form>
 
+                    <div style="margin-top: 15px; width: 100%;">
+                      <span style="color: white;">Nie masz jeszcze konta?</span>
+                      <a href="{% url 'Athur_Register' %}" style="color: #c5a059; font-weight: bold; text-decoration: underline;">Stwórz konto</a>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
-      </section>
-     <script src="{%static 'Allfiles/Js/bootstrap.bundle.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery-1.12.4.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/Script.js'%}"></script>
+      </div>
+    </div>
+  </section>
+
+  <script src="{%static 'Allfiles/Js/bootstrap.bundle.min.js'%}"></script>
+  <script src="{%static 'Allfiles/Js/jquery-1.12.4.min.js'%}"></script>
+  <script src="{%static 'Allfiles/Js/Script.js'%}"></script>
 </body>
