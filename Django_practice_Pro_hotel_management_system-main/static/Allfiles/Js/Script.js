@@ -47,10 +47,6 @@ $(function () {
     $('.open1').click(function () {
         $('.Check_out').datetimepicker('show');
     });
-    // about part js
-  $(".video_btn").modalVideo({
-    theme: 'dark',
-    });
   // EXPLOR OUR ROOMS js
     $('.room_slide').slick({
         autoplay: true,
@@ -60,10 +56,14 @@ $(function () {
         dots: true,
         arrows:false
     });
-  //OUR AWESOME SERVICES js
-    
-    $('#example').tabs({
-        delay: 500,
+    // Udogodnienia — przełączanie zdjęć
+    $('.aladu-service-item').on('click', function () {
+        var $btn = $(this);
+        var img = $btn.data('img');
+        var label = $btn.data('label');
+        $('.aladu-service-item').removeClass('is-active').attr('aria-selected', 'false');
+        $btn.addClass('is-active').attr('aria-selected', 'true');
+        $('#aladu-service-img').attr('src', img).attr('alt', label);
     });
 
    //OUR GALLERY js
@@ -78,21 +78,35 @@ $(function () {
 
     $('.GALLERY_slider').slick({
         autoplay: true,
-        autoplaySpeed:2000,
-        slidesToShow:4,
-        slidesToScroll:2,
-        dots: true,
-        arrows:false
+        autoplaySpeed: 4000,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        dots: false,
+        arrows: true,
+        prevArrow: $('.gallery-prev'),
+        nextArrow: $('.gallery-next'),
+        responsive: [
+            { breakpoint: 992, settings: { slidesToShow: 2 } },
+            { breakpoint: 576, settings: { slidesToShow: 1 } }
+        ]
     });
 
-      //Our Special Staff Part start
+      // Nasz zespół
      $('.Staff_slider').slick({
         autoplay: true,
-        autoplaySpeed:2000,
-        slidesToShow:4,
-        slidesToScroll:2,
-        dots: true,
-        arrows:false
+        autoplaySpeed: 4500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        dots: false,
+        arrows: true,
+        prevArrow: $('.staff-prev'),
+        nextArrow: $('.staff-next'),
+        infinite: true,
+        responsive: [
+            { breakpoint: 1200, settings: { slidesToShow: 3 } },
+            { breakpoint: 992, settings: { slidesToShow: 2 } },
+            { breakpoint: 576, settings: { slidesToShow: 1 } }
+        ]
     });
    
    //counter part js

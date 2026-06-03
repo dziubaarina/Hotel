@@ -1,224 +1,181 @@
 <!DOCTYPE HTML>
-{% load i18n %}
+{% load i18n static %}
+<html lang="pl">
 <head>
-     <meta charset="utf-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <title>{% block title %}{% endblock %}</title>
-     <link rel="preconnect" href="https://fonts.gstatic.com">
-     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-     {% load static %}
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/bootstrap.min.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/fontawesome.min.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/animate.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/slick.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/jquery.datetimepicker.min.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/modal-video.min.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/magnific-popup.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/Style.css'%}">
-     <link rel="stylesheet" href="{%static 'Allfiles/Css/Responsive.css'%}">
-     <style>
-         /* Zapewnienie, że wewnątrz navbar-collapse logo "Hotel" jest w jednej linijce (jak na screenie mobilnym) */
-         .navbar-collapse .menu_logo h1 { display: inline-block; margin: 0; }
-
-         /* Poprawka dla napisu "Hotel" w logo głównego menu, aby był w jednej linii i stylu */
-         .navbar .menu_logo h1 { display: inline-block; margin-right: 5px; }
-
-         /* Poprawka odstępu dla loga w stopce (w jednej linijce i stylu) */
-         .footer_content1 .menu_logo h1 { display: inline-block; margin: 0; padding: 0; }
-     </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hotel Aladu — luksusowy hotel 5★ w Krakowie. Rezerwacja online, pokoje, spa i restauracja.">
+    <title>{% block title %}Hotel Aladu{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/jquery.datetimepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/modal-video.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/Style.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/Responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'Allfiles/Css/aladu-fixes.css' %}">
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    {% get_current_language as LANGUAGE_CODE %}
-     <header id="header">
-            <div class="container">
-                 <div class="row">
-                  <div class="header_top">
-                         <div class="row">
-                             <div class="col-lg-6">
-                                 <div class="header_top_left">
-                                     <ul>
-                                        <li><span><i class="fas fa-map-marker-alt"></i>30 Jubilee Hills, Hyderabad</span></li>
-                                        <li><span><i class="fas fa-phone-alt"></i>9182285606</span></li>
-                                        <li><span><i class="far fa-envelope"></i>hotelaladu@gmail.com</span></li>
-                                    </ul>
-                                 </div>
-                             </div>
-                            <div class="col-lg-6">
-                                <div class="header_top_right">
-                                   <ul style="display: flex; align-items: center; justify-content: flex-end; margin: 0; list-style: none; padding: 0;">
-                                      <li><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
-                                      <li><a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a></li>
-                                      <li><a href="https://www.pinterest.com/"><i class="fab fa-pinterest-p"></i></a></li>
+<body class="{% block body_class %}{% endblock %}">
+{% get_current_language as LANGUAGE_CODE %}
 
-                                      <li class="ms-3">
-                                          <form action="{% url 'set_language' %}" method="post" style="display: inline; margin: 0;">
-                                              {% csrf_token %}
-                                              <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                                              <select name="language" onchange="this.form.submit()" style="background: transparent; color: #fff; border: none; cursor: pointer; font-weight: bold; outline: none;">
-                                                  {% get_available_languages as LANGUAGES %}
-                                                  {% for lang in LANGUAGES %}
-                                                      <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %} style="color: black;">
-                                                          {{ lang.0|upper }}
-                                                      </option>
-                                                  {% endfor %}
-                                              </select>
-                                          </form>
-                                      </li>
-
-                                      {% if user.is_authenticated %}
-                                        <li class="ms-3">
-                                            <a href="{% url 'Logout_user' %}" style="display: inline-block; min-width: 150px; text-align: center; background: #dc3545; color: #fff !important; padding: 6px 12px !important; border-radius: 3px; font-weight: bold; font-size: 13px; text-decoration: none;">
-                                                <i class="fas fa-sign-out-alt"></i> {% if LANGUAGE_CODE == 'pl' %}Wyloguj{% else %}Log Out{% endif %}
-                                            </a>
-                                        </li>
-                                      {% else %}
-                                        <li class="ms-3">
-                                            <a href="{% url 'Aothur_login' %}" style="display: inline-block; min-width: 150px; text-align: center; background: #555; color: #fff !important; padding: 6px 12px !important; border-radius: 3px; font-weight: bold; font-size: 13px; text-decoration: none;">
-                                                <i class="fas fa-user"></i> {% if LANGUAGE_CODE == 'pl' %}Zaloguj się{% else %}Log In{% endif %}
-                                            </a>
-                                        </li>
-                                        <li class="ms-2">
-                                            <a href="{% url 'Athur_Register' %}" style="display: inline-block; min-width: 150px; text-align: center; background: #c5a059; color: #fff !important; padding: 6px 12px !important; border-radius: 3px; font-weight: bold; font-size: 13px; text-decoration: none;">
-                                                <i class="fas fa-user-plus"></i> {% if LANGUAGE_CODE == 'pl' %}Stwórz konto{% else %}Sign Up{% endif %}
-                                            </a>
-                                        </li>
-                                      {% endif %}
-
-                                   </ul>
-                                </div>
-                            </div>
-                         </div>
+<header id="header">
+    <div class="header_top aladu-header-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 col-md-12">
+                    <div class="header_top_left">
+                        <ul>
+                            <li><span><i class="fas fa-map-marker-alt"></i> ul. Floriańska 14, Kraków</span></li>
+                            <li><span><i class="fas fa-phone-alt"></i> +48 12 345 67 89</span></li>
+                            <li><span><i class="far fa-envelope"></i> rezerwacja@hotelaladu.pl</span></li>
+                        </ul>
                     </div>
-                 </div>
-             </div>
+                </div>
+                <div class="col-lg-5 col-md-12">
+                    <div class="header_top_right">
+                        <ul class="aladu-top-actions">
+                            <li>
+                                <a href="{% url 'OnlineBooking' %}" class="aladu-top-book">Zarezerwuj</a>
+                            </li>
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                    <select name="language" class="aladu-lang-select" onchange="this.form.submit()" aria-label="Język strony">
+                                        {% get_available_languages as LANGUAGES %}
+                                        {% for lang in LANGUAGES %}
+                                        <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                                            {% if lang.0 == 'pl' %}PL{% else %}EN{% endif %}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li>
+                                <form action="{% url 'Logout_user' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="aladu-top-btn">Wyloguj</button>
+                                </form>
+                            </li>
+                            {% else %}
+                            <li><a href="{% url 'Aothur_login' %}" class="aladu-top-link">Zaloguj się</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-             <nav class="navbar navbar-expand-lg menu">
-                 <div class="container">
-                   <a class="menu_logo" href="{% url 'Home' %}">
-                     <h1>Aladu Hotel</h1>
-                  </a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#Mynav" >
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                   <div class="collapse navbar-collapse " id="Mynav">
+    <nav class="navbar navbar-expand-lg menu">
+        <div class="container">
+            <a class="menu_logo aladu-brand" href="{% url 'Home' %}">
+                <span class="aladu-brand-main">Hotel Aladu</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#Mynav" aria-controls="Mynav" aria-expanded="false" aria-label="Menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="Mynav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Home' %}">Strona główna</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Home' %}#OUR_ROOMS">Pokoje</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Home' %}#Service">Udogodnienia</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Home' %}#GALLERY">Galeria</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Home' %}#about">O hotelu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#footer">Kontakt</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link aladu-nav-highlight" href="{% url 'MyReservations' %}">Moje rezerwacje</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link aladu-nav-panel {% if request.resolver_match.url_name == 'StaffPanel' %}is-active{% endif %}" href="{% url 'StaffPanel' %}">
+                            <i class="fas fa-concierge-bell"></i> Panel zarządzania
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
-                      <ul class="navbar-nav m-0 p-0">
-                        <li class="nav-item">
-                          <a class="nav-link" href="{% url 'Home' %}">Home</a>
-                        </li>
+{% block contant %}{% endblock %}
 
-                        {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'MyReservations' %}" style="color: #ffbf00 !important; font-weight: 800;">{% if LANGUAGE_CODE == 'pl' %}MOJE REZERWACJE{% else %}MY BOOKINGS{% endif %}</a>
-                        </li>
-                        {% endif %}
-
-                        <li class="nav-item menu-item">
-                          <a class="nav-link" href="/#OUR_ROOMS">{% if LANGUAGE_CODE == 'pl' %}Pokoje i Ceny{% else %}Rooms & Prices{% endif %}</a>
-                        </li>
-                        <li class="nav-item menu-item">
-                          <a class="nav-link" href="/#GALLERY">{% if LANGUAGE_CODE == 'pl' %}Galeria{% else %}Gallery{% endif %}</a>
-                        </li>
-                       <li class="nav-item menu-item ">
-                          <a class="nav-link" href="/#about">{% if LANGUAGE_CODE == 'pl' %}O nas{% else %}About Us{% endif %}</a>
-                       </li>
-                       <li class="nav-item menu-item ">
-                          <a class="nav-link" href="#footer">{% if LANGUAGE_CODE == 'pl' %}Kontakt{% else %}Contact{% endif %}</a>
-                       </li>
-
-                       {% if user.is_authenticated and user.is_staff %}
-                       <li class="nav-item">
-                           <a class="nav-link" href="/admin/" style="background-color: #ffc107; color: black !important; border-radius: 4px; padding: 5px 10px !important; margin-left: 10px; font-weight: 700; font-size: 13px;">
-                               <i class="fas fa-tools"></i> ADMIN
-                           </a>
-                       </li>
-                       {% endif %}
-
-                     </ul>
-                   </div>
-
-                   {% if user.is_authenticated %}
-                   <div class="Booking_button">
-                        <a href="{% url 'OnlineBooking' %}">{% trans "Booking Now" %}<span><i class="fas fa-angle-double-right"></i></span></a>
-                   </div>
-                   {% endif %}
-                 </div>
-             </nav>
-     </header>
-
-   {% block contant %}{% endblock %}
-
-   <footer id="footer">
-     <div class="container">
-         <div class="row">
-               <div class="col-lg-3">
-                  <div class="footer_content1">
-                      <a class="menu_logo" href="#">
-                         <h1>Aladu Hotel</h1>
-                      </a>
-                      <p>{% trans "Welcome to Hotel Booking Management, your one-stop solution for hassle-free hotel reservations." %}</p>
-                      <ul>
-                           <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                           <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                     </ul>
-                  </div>
-               </div>
-               <div class="col-lg-3 ">
-                  <div class="footer_content2">
-                      <h3> {% if LANGUAGE_CODE == 'pl' %}KONTAKT{% else %}CONTACT US{% endif %} </h3>
-                     <div class="row">
-                        <div class="col-lg-6">
-                              <ul class="footer_list1">
-                                    <li><a href="#"><i class="fas fa-map-marker-alt"></i></a></li>
-                                    <li><a href="#"><i class="fas fa-phone-alt"></i></a></li>
-                                    <li><a href="#"><i class="far fa-envelope"></i></a></li>
-                              </ul>
-                        </div>
-                        <div class="col-lg-6">
-                              <ul class="footer_list2">
-                                    <li>30 Jubilee Hills, Hyderabad</li>
-                                    <li>9182285606</li>
-                                    <li>hotelaladu@gmail.com</li>
-                              </ul>
-                        </div>
-                  </div>
-               </div>
-             </div>
-             <div class="col-lg-3 ">
-                  <div class="footer_content2">
-                     <h3> {% if LANGUAGE_CODE == 'pl' %}LINKI{% else %}QUICK LINKS{% endif %} </h3>
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="footer_content1">
+                    <a class="menu_logo" href="{% url 'Home' %}"><h1>Hotel Aladu</h1></a>
+                    <p>Butikowy hotel pięciogwiazdkowy w sercu Krakowa. Komfort, dyskrecja i obsługa na najwyższym poziomie.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="footer_content2">
+                    <h3>Kontakt</h3>
+                    <ul class="footer_list2 aladu-footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> ul. Floriańska 14, 31-019 Kraków</li>
+                        <li><i class="fas fa-phone-alt"></i> +48 12 345 67 89</li>
+                        <li><i class="far fa-envelope"></i> rezerwacja@hotelaladu.pl</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="footer_content2">
+                    <h3>Nawigacja</h3>
                     <ul class="footer_link">
-                        <li><a href="{% url 'Home' %}">{% trans "Home" %}</a></li>
-                        <li><a href="/#GALLERY">{% if LANGUAGE_CODE == 'pl' %}Galeria{% else %}Gallery{% endif %}</a></li>
-                        <li><a href="/#OUR_ROOMS">{% if LANGUAGE_CODE == 'pl' %}Pokoje i Ceny{% else %}Rooms & Prices{% endif %}</a></li>
-                        <li><a href="#footer">{% if LANGUAGE_CODE == 'pl' %}Kontakt{% else %}Contact{% endif %}</a></li>
-                     </ul>
-                  </div>
-             </div>
-             <div class="col-lg-3 ">
-                  <div class="footer_content4">
-                     <h3> COLLECTIONS </h3>
-                    <ul class="footer_img">
-                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-1.jpg'%}" alt="img" style="width: 70px; height: 50px; object-fit: cover;"></a></li>
-                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-2.jpg'%}" alt="img" style="width: 70px; height: 50px; object-fit: cover;"></a></li>
-                        <li><a href="#"><img src="{%static 'Allfiles/Photo/room-3.jpg'%}" alt="img" style="width: 70px; height: 50px; object-fit: cover;"></a></li>
-                     </ul>
-                  </div>
-             </div>
-           </div>
-         </div>
-     </div>
-   </footer>
+                        <li><a href="{% url 'Home' %}">Strona główna</a></li>
+                        <li><a href="{% url 'Home' %}#OUR_ROOMS">Pokoje i ceny</a></li>
+                        <li><a href="{% url 'OnlineBooking' %}">Rezerwacja online</a></li>
+                        <li><a href="{% url 'Aothur_login' %}">Logowanie</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row aladu-footer-bottom">
+            <div class="col-12 text-center">
+                <p>© {% now "Y" %} Hotel Aladu. Wszelkie prawa zastrzeżone.</p>
+            </div>
+        </div>
+    </div>
+</footer>
 
-     <script src="{%static 'Allfiles/Js/bootstrap.bundle.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery-1.12.4.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery.textillate.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery.lettering.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/slick.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery.datetimepicker.full.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery-modal-video.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery.magnific-popup.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/tabs.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/jquery.counterup.min.js'%}"></script>
-     <script src="{%static 'Allfiles/Js/Script.js'%}"></script>
+<script src="{% static 'Allfiles/Js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'Allfiles/Js/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'Allfiles/Js/jquery.textillate.js' %}"></script>
+<script src="{% static 'Allfiles/Js/jquery.lettering.js' %}"></script>
+<script src="{% static 'Allfiles/Js/slick.min.js' %}"></script>
+<script src="{% static 'Allfiles/Js/jquery.datetimepicker.full.min.js' %}"></script>
+<script src="{% static 'Allfiles/Js/jquery-modal-video.min.js' %}"></script>
+<script src="{% static 'Allfiles/Js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'Allfiles/Js/tabs.js' %}"></script>
+<script src="{% static 'Allfiles/Js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'Allfiles/Js/Script.js' %}"></script>
+<script>
+(function () {
+  var v = "{{ PHOTO_CACHE_VERSION|default:'1' }}";
+  document.querySelectorAll('img[src*="/static/Allfiles/Photo/"]').forEach(function (img) {
+    var u = img.getAttribute("src");
+    if (u && u.indexOf("?v=") === -1) {
+      img.src = u + (u.indexOf("?") === -1 ? "?" : "&") + "v=" + v;
+    }
+  });
+  document.querySelectorAll('[style*="/static/Allfiles/Photo/"]').forEach(function (el) {
+    var s = el.getAttribute("style");
+    if (s && s.indexOf("?v=") === -1) {
+      el.setAttribute("style", s.replace(/url\(([^)]+)\)/g, function (m, url) {
+        var q = url.indexOf("?") === -1 ? "?" : "&";
+        return "url(" + url + q + "v=" + v + ")";
+      }));
+    }
+  });
+})();
+</script>
 </body>
+</html>

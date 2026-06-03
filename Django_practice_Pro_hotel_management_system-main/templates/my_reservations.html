@@ -1,0 +1,97 @@
+{% extends 'allinclude.html' %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block title %}
+  {% if LANGUAGE_CODE == 'pl' %}Moje rezerwacje{% else %}My Bookings{% endif %} - Aladu Hotel
+{% endblock %}
+
+{% block contant %}
+<section id="slider_booking">
+  <div class="slider_book_Pic" style="background: url({% static 'Allfiles/Photo/slider-1.jpg' %})">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-md-10">
+          <div class="slider_booking_text">
+            <h4>{% trans "HOTEL SERVICE" %}</h4>
+            <a href="{% url 'Home' %}">{% trans "Home" %}</a>
+            <i class="fas fa-slash"></i>
+            <span>{% if LANGUAGE_CODE == 'pl' %}Moje rezerwacje{% else %}My Bookings{% endif %}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="Booking_part">
+  <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center" style="font-weight: bold;">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="BOOKING_from">
+          <div class="BOOKING_from_title">
+            <h3>{% if LANGUAGE_CODE == 'pl' %}MOJE REZERWACJE{% else %}MY BOOKINGS{% endif %}</h3>
+          </div>
+
+          {% if bookings %}
+            <div class="table-responsive">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% if LANGUAGE_CODE == 'pl' %}Pokój{% else %}Room{% endif %}</th>
+                    <th>{% if LANGUAGE_CODE == 'pl' %}Przyjazd{% else %}Check-in{% endif %}</th>
+                    <th>{% if LANGUAGE_CODE == 'pl' %}Wyjazd{% else %}Check-out{% endif %}</th>
+                    <th>{% if LANGUAGE_CODE == 'pl' %}Akcje{% else %}Actions{% endif %}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for booking in bookings %}
+                    <tr>
+                      <td>{{ booking.Name }} {{ booking.Surname }}</td>
+                      <td>{{ booking.Room_Type|default:"-" }}</td>
+                      <td>{{ booking.Check_in }}</td>
+                      <td>{{ booking.Check_out }}</td>
+                      <td>
+                        <form method="post" action="{% url 'CancelBooking' booking.Id %}" style="display:inline;"
+                              onsubmit="return confirm('{% if LANGUAGE_CODE == 'pl' %}Czy na pewno anulować tę rezerwację?{% else %}Are you sure you want to cancel this booking?{% endif %}');">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-sm btn-danger">
+                            {% if LANGUAGE_CODE == 'pl' %}Anuluj{% else %}Cancel{% endif %}
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-center py-4">
+              {% if LANGUAGE_CODE == 'pl' %}
+                Nie masz jeszcze żadnych rezerwacji.
+              {% else %}
+                You don't have any bookings yet.
+              {% endif %}
+            </p>
+          {% endif %}
+
+          <div class="onlineBooking_btn text-center mt-3">
+            <a href="{% url 'OnlineBooking' %}" class="btn btn-zarezerwuj">
+              {% trans "BOOKING Now" %}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

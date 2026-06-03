@@ -1,194 +1,266 @@
-{%extends 'allinclude.html'%}
-{% load i18n %}
- {% block title %}
-   Online Booking - Aladu Hotel
-{% endblock %}
-{% block contant %}
+{% extends 'allinclude.html' %}
+{% load static aladu_extras %}
 
-    {% load static %}
+{% block title %}Rezerwacja online — Hotel Aladu{% endblock %}
+
+{% block contant %}
 <section id="slider_booking">
-         <div class="slider_book_Pic"style="background: url({%static 'Allfiles/photo/slider-1.jpg'%})">
-            <div class="container">
-                <div class="row justify-content-center text-center">
-                   <div class="col-md-10">
-                      <div class="slider_booking_text">
-                           <h4>{% trans "HOTEL SERVICE" %}</h4>
-                           <a href="{% url 'Home' %}">{% trans "Home" %}</a> <i class="fas fa-slash"></i> <a href="">{% trans "Online Booking" %}</a>
-                        </div>
-                   </div>
+    <div class="slider_book_Pic" style="background: linear-gradient(rgba(15,28,46,0.6), rgba(15,28,46,0.6)), url({% static 'Allfiles/Photo/slider-1.jpg' %}) center/cover;">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-10">
+                    <div class="slider_booking_text text-white">
+                        <h4>REZERWACJA ONLINE</h4>
+                        <a href="{% url 'Home' %}">Strona główna</a>
+                        <i class="fas fa-slash"></i>
+                        <span>Rezerwacja</span>
+                    </div>
                 </div>
             </div>
-         </div>
-   </section>
+        </div>
+    </div>
+</section>
 
-  <section id="Booking_part">
-     <div class="container">
-
-          {% if messages %}
+<section id="Booking_part">
+    <div class="container">
+        {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} text-center" style="font-weight: bold;">
+                <div class="alert alert-{{ message.tags }} text-center mb-4" style="font-weight: 600;">
                     {{ message }}
                 </div>
             {% endfor %}
-          {% endif %}
+        {% endif %}
 
-          <div class="row">
+        <div class="row g-4">
             <div class="col-lg-4">
-               <div class="BOOKING_DETAILS">
-                   <div class="BOOKING_title">
-                     <h2>{% trans "BOOKING DETAILS" %}</h2>
-                     <p>{% trans "Selected Room" %}</p>
-                   </div>
-
-                   <div style="display: flex; align-items: center; margin-bottom: 25px; margin-top: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-                     <img id="dynamic-img" src="{%static 'Allfiles/Photo/room-1.jpg'%}" style="width: 120px; height: 85px; object-fit: cover; border-radius: 5px; flex-shrink: 0; margin-right: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                     <div style="display: flex; flex-direction: column;">
-                         <h4 id="dynamic-name" style="margin: 0 0 5px 0; font-size: 1.1rem; font-weight: 700; line-height: 1.3; color: #333;">{% trans "Select Room Requirements" %}</h4>
-                         <span style="color: #c5a059; font-weight: bold; font-size: 1.2rem;"><i class="fas fa-dollar-sign"></i><span id="dynamic-price">0</span> <span style="color: #777; font-weight: normal; font-size: 0.85rem;">/ {% trans "per night" %}</span></span>
-                     </div>
-                   </div>
-
-                   <div class="BOOKING_room_info1">
+                <div class="BOOKING_DETAILS">
+                    <div class="BOOKING_title">
+                        <h2>Podsumowanie</h2>
+                        <p>Wybrany pokój</p>
+                    </div>
+                    <div class="booking-room-preview">
+                        <img id="dynamic-img" src="{% static 'Allfiles/Photo/room-1.jpg' %}" alt="Wybrany pokój">
+                        <div>
+                            <h4 id="dynamic-name">Wybierz pokój</h4>
+                            <span class="price-pln"><span id="dynamic-price">0</span> zł <small>/ noc</small></span>
+                        </div>
+                    </div>
+                    <div class="BOOKING_room_info1 d-flex justify-content-between">
                         <div class="BOOKING_room">
-                           <h4>{% trans "NIGHT" %}</h4>
-                           <span id="dynamic-nights">0</span>
+                            <h4>Liczba nocy</h4>
+                            <span id="dynamic-nights">0</span>
                         </div>
                         <div class="BOOKING_room1">
-                           <h4>{% trans "TOTAL PRICE" %}</h4>
-                           <span><i class="fas fa-dollar-sign"></i><span id="dynamic-total">0</span></span>
+                            <h4>Razem</h4>
+                            <span class="price-pln"><span id="dynamic-total">0</span> zł</span>
                         </div>
-                  </div>
-               </div>
-
-               <div class="BOOKING_help">
-                  <div class="BOOKING_help_title">
-                     <h3>{% trans "NEED HELP FOR BOOKING !" %}</h3>
-                  </div>
-                  <div class="BOOKING_help_icon">
-                     <p><i class="fas fa-mobile-alt"></i></p>
-                     <span>9182285606</span>
-                     <h6>hotelaladu@gmail.com</h6>
-                  </div>
-               </div>
+                    </div>
+                </div>
+                <div class="BOOKING_help mt-4">
+                    <h3>Potrzebujesz pomocy?</h3>
+                    <p class="mb-1"><i class="fas fa-phone-alt"></i> +48 12 345 67 89</p>
+                    <p class="mb-0"><i class="far fa-envelope"></i> rezerwacja@hotelaladu.pl</p>
+                </div>
             </div>
 
             <div class="col-lg-8">
-               <div class="BOOKING_from">
-                  <div class="BOOKING_from_title">
-                     <h3>{% trans "PERSONAL INFORMATION" %}</h3>
-                     <span>{% trans "Booking form" %}</span>
-                  </div>
-                  <div class="BOOKING_from_info">
-                     <form method="POST" action="">
-                          {% csrf_token %}
-                        <div class="from_info1">
+                <div class="BOOKING_from">
+                    <div class="BOOKING_from_title mb-3">
+                        <h3>Formularz rezerwacji</h3>
+                        <span class="text-muted">Wypełnij dane — potwierdzenie otrzymasz na e-mail</span>
+                    </div>
 
-                           <div class="form-group1">
-                               <select class="form-control" name="Room_Type" id="room-selector" required>
-                                 <option value="" disabled selected>{% trans "Select Room Requirements" %}</option>
-                                 <option value="Single" data-price="250" data-img="{%static 'Allfiles/Photo/room-2.jpg'%}" data-name="Single Room">{% trans "Single Room" %} ($250)</option>
-                                 <option value="Double" data-price="310" data-img="{%static 'Allfiles/Photo/room-3.jpg'%}" data-name="Double Room">{% trans "Double Room" %} ($310)</option>
-                                 <option value="Luxury" data-price="350" data-img="{%static 'Allfiles/Photo/room-4.jpg'%}" data-name="Luxury Room">{% trans "Luxury Room" %} ($350)</option>
-                                 <option value="Family" data-price="400" data-img="{%static 'Allfiles/Photo/room-5.jpg'%}" data-name="Family Room">{% trans "Family Room" %} ($400)</option>
-                               </select>
-                           </div>
+                    {% if not user.is_authenticated %}
+                    <div class="booking-guest-note">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Rezerwujesz jako gość</strong> — nie musisz zakładać konta. Możesz też
+                        <a href="{% url 'Aothur_login' %}?next={% url 'OnlineBooking' %}">zalogować się</a>, aby śledzić rezerwacje w panelu.
+                    </div>
+                    {% endif %}
 
-                           <div class="form-group1">
-                              <input type="date" name="Check_in" id="check-in-date" class="form-control" required/>
-                           </div>
-                           <div class="form-group1">
-                              <input type="date" name="Check_out" id="check-out-date" class="form-control" required/>
-                           </div>
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                    {% endif %}
 
-                           <div class="form-group1">
-                               <select class="form-control" name="ADULT">
-                                 <option value="1">1 {% trans "ADULT" %}</option>
-                                 <option value="2">2 {% trans "ADULT" %}</option>
-                                 <option value="3">3 {% trans "ADULT" %}</option>
-                               </select>
-                           </div>
-                           <div class="form-group1">
-                              <select class="form-control" name="CHILDREN">
-                                 <option value="0">0 {% trans "CHILDREN" %}</option>
-                                 <option value="1">1 {% trans "CHILDREN" %}</option>
-                                 <option value="2">2 {% trans "CHILDREN" %}</option>
-                               </select>
-                           </div>
-                           <div class="form-group1">
-                              <input type="text" name="Name" class="form-control" placeholder="{% trans 'Name' %}" required />
-                           </div>
-                           <div class="form-group1">
-                              <input type="text" name="Surname" class="form-control" placeholder="{% trans 'Surname' %}" required />
-                           </div>
-                           <div class="form-group1">
-                              <input type="email" name="Email" class="form-control" placeholder="{% trans 'Email' %}" required />
-                           </div>
-                           <div class="form-group1">
-                              <input type="text" name="Phone_Number" class="form-control" placeholder="{% trans 'Phone Number' %}" required />
-                           </div>
+                    <form method="POST" action="" id="booking-form" data-availability-url="{% url 'BookingAvailabilityAPI' %}">
+                        {% csrf_token %}
+                        <p id="availability-hint" class="booking-avail-hint" aria-live="polite"></p>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Data przyjazdu *</label>
+                                <input type="date" name="Check_in" id="check-in-date" class="form-control" required value="{{ form.Check_in.value|default:'' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Data wyjazdu *</label>
+                                <input type="date" name="Check_out" id="check-out-date" class="form-control" required value="{{ form.Check_out.value|default:'' }}">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Typ pokoju *</label>
+                                <select class="form-control" name="Room_Type" id="room-selector" required>
+                                    <option value="" disabled {% if not form.Room_Type.value %}selected{% endif %} data-room-id="">Najpierw daty, potem pokój</option>
+                                    {% for room in catalog_rooms %}
+                                    <option value="{{ room.Room_Type }}"
+                                        data-room-id="{{ forloop.counter }}"
+                                        data-price="{{ room.Room_Price }}"
+                                        data-capacity="{{ room.Room_Capacity }}"
+                                        data-img="{% room_photo_url room %}"
+                                        data-name="{{ room.Room_Type }}"
+                                        {% if form.Room_Type.value == room.Room_Type %}selected{% endif %}>
+                                        {{ room.Room_Type }} — od {{ room.Room_Price }} zł / noc (limit {{ room.Room_Capacity }} pok.)
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <small class="text-muted d-block mt-1">Pełne kategorie znikną z listy po wyborze dat. Przy 3/3 nie ma rezerwacji.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Dorośli</label>
+                                <select class="form-control" name="ADULT">
+                                    <option value="1">1 osoba</option>
+                                    <option value="2" selected>2 osoby</option>
+                                    <option value="3">3 osoby</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Dzieci</label>
+                                <select class="form-control" name="CHILDREN">
+                                    <option value="0" selected>Brak</option>
+                                    <option value="1">1 dziecko</option>
+                                    <option value="2">2 dzieci</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Imię *</label>
+                                <input type="text" name="Name" class="form-control" placeholder="Jan" required value="{{ form.Name.value|default:'' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nazwisko *</label>
+                                <input type="text" name="Surname" class="form-control" placeholder="Kowalski" required value="{{ form.Surname.value|default:'' }}">
+                            </div>
+                            {% if not user.is_authenticated %}
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Adres e-mail *</label>
+                                <input type="email" name="contact_email" class="form-control" placeholder="jan.kowalski@example.pl" required value="{{ form.contact_email.value|default:'' }}">
+                                {% if form.contact_email.errors %}<div class="text-danger small">{{ form.contact_email.errors.0 }}</div>{% endif %}
+                            </div>
+                            {% endif %}
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Telefon *</label>
+                                <input type="text" name="Phone_Number" class="form-control" placeholder="+48 123 456 789, (12) 345-67-89…" required value="{{ form.Phone_Number.value|default:'' }}" inputmode="tel" autocomplete="tel">
+                                {% if form.Phone_Number.errors %}<div class="text-danger small">{{ form.Phone_Number.errors.0 }}</div>{% endif %}
+                            </div>
+                            <input type="hidden" name="City" value="Kraków">
+                            <input type="hidden" name="Country" value="Polska">
                         </div>
 
-                        <div class="checkbox3">
-                          <input type="checkbox" name="check" required/><label for="">{% trans "I Agree The Terms & Condition" %}</label>
+                        <div class="checkbox3 mt-3">
+                            <input type="checkbox" name="check" id="terms" required>
+                            <label for="terms">Akceptuję regulamin hotelu i politykę prywatności (RODO). Wiem, że moje dane są przetwarzane w bezpieczny sposób.</label>
                         </div>
-                        <div class="onlineBooking_btn">
-                           <button type="submit">{% trans "BOOKING Now" %}</button>
+
+                        <div class="booking-form-actions">
+                            <button type="submit" class="btn-book-submit">
+                                <i class="fas fa-check-circle"></i> Potwierdź rezerwację
+                            </button>
+                            <button type="reset" class="btn-book-reset">Wyczyść formularz</button>
                         </div>
-                        <div class="onlineBooking_btn">
-                           <button type="reset">{% trans "Reset" %}</button>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-          </div>
-          </div>
-     </div>
-  </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-  <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const roomSelector = document.getElementById('room-selector');
-          const checkInInput = document.getElementById('check-in-date');
-          const checkOutInput = document.getElementById('check-out-date');
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const roomSelector = document.getElementById('room-selector');
+    const checkInInput = document.getElementById('check-in-date');
+    const checkOutInput = document.getElementById('check-out-date');
+    const imgEl = document.getElementById('dynamic-img');
+    const nameEl = document.getElementById('dynamic-name');
+    const priceEl = document.getElementById('dynamic-price');
+    const totalEl = document.getElementById('dynamic-total');
+    const nightsEl = document.getElementById('dynamic-nights');
+    const photoVersion = '{{ PHOTO_CACHE_VERSION|default:"1" }}';
+    const defaultImg = '{% static "Allfiles/Photo/room-1.jpg" %}';
+    const today = new Date().toISOString().split('T')[0];
+    checkInInput.min = today;
+    checkOutInput.min = today;
 
-          const imgEl = document.getElementById('dynamic-img');
-          const nameEl = document.getElementById('dynamic-name');
-          const priceEl = document.getElementById('dynamic-price');
-          const totalEl = document.getElementById('dynamic-total');
-          const nightsEl = document.getElementById('dynamic-nights');
+    function formatPln(n) {
+        return new Intl.NumberFormat('pl-PL').format(n);
+    }
 
-          function calculateTotal() {
-              const selectedOption = roomSelector.options[roomSelector.selectedIndex];
-              if (!selectedOption.value) return;
+    function withCacheBust(url) {
+        if (!url) return url;
+        if (url.indexOf('v=') !== -1) return url;
+        var sep = url.indexOf('?') === -1 ? '?' : '&';
+        return url + sep + 'v=' + photoVersion;
+    }
 
-              imgEl.src = selectedOption.getAttribute('data-img');
-              nameEl.textContent = selectedOption.getAttribute('data-name');
+    function setRoomImage(url, alt) {
+        imgEl.src = withCacheBust(url);
+        imgEl.alt = alt || 'Wybrany pokój';
+        imgEl.style.display = url ? 'block' : 'none';
+    }
 
-              const basePrice = parseFloat(selectedOption.getAttribute('data-price'));
-              priceEl.textContent = basePrice;
+    function selectRoomById(roomId) {
+        if (!roomId) return false;
+        for (var i = 0; i < roomSelector.options.length; i++) {
+            var opt = roomSelector.options[i];
+            if (opt.getAttribute('data-room-id') === String(roomId)) {
+                roomSelector.selectedIndex = i;
+                return true;
+            }
+        }
+        return false;
+    }
 
-              let nights = 0;
-              if (checkInInput.value && checkOutInput.value) {
-                  const checkInDate = new Date(checkInInput.value);
-                  const checkOutDate = new Date(checkOutInput.value);
+    function calculateTotal() {
+        const selectedOption = roomSelector.options[roomSelector.selectedIndex];
+        if (!selectedOption || !selectedOption.value) {
+            nameEl.textContent = 'Wybierz pokój';
+            priceEl.textContent = '0';
+            totalEl.textContent = '0';
+            nightsEl.textContent = '0';
+            setRoomImage(defaultImg, 'Wybierz pokój');
+            return;
+        }
+        setRoomImage(
+            selectedOption.getAttribute('data-img'),
+            selectedOption.getAttribute('data-name')
+        );
+        nameEl.textContent = selectedOption.getAttribute('data-name');
+        const basePrice = parseFloat(selectedOption.getAttribute('data-price'));
+        priceEl.textContent = formatPln(basePrice);
+        let nights = 0;
+        if (checkInInput.value && checkOutInput.value) {
+            const diff = new Date(checkOutInput.value) - new Date(checkInInput.value);
+            if (diff > 0) nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+        nightsEl.textContent = nights > 0 ? nights : '—';
+        totalEl.textContent = nights > 0 ? formatPln(basePrice * nights) : '0';
+    }
 
-                  const diffTime = checkOutDate - checkInDate;
+    roomSelector.addEventListener('change', calculateTotal);
+    checkInInput.addEventListener('change', function() {
+        checkOutInput.min = checkInInput.value || today;
+        calculateTotal();
+    });
+    checkOutInput.addEventListener('change', calculateTotal);
+    document.addEventListener('aladu:availability-updated', calculateTotal);
 
-                  if (diffTime > 0) {
-                      nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                  }
-              }
+    var roomFromUrl = new URLSearchParams(window.location.search).get('room');
+    if (roomFromUrl && selectRoomById(roomFromUrl)) {
+        calculateTotal();
+    }
 
-              const finalNights = nights > 0 ? nights : 1;
-
-              nightsEl.textContent = nights > 0 ? nights : 0;
-              totalEl.textContent = basePrice * finalNights;
-          }
-
-          roomSelector.addEventListener('change', calculateTotal);
-          checkInInput.addEventListener('change', calculateTotal);
-          checkOutInput.addEventListener('change', calculateTotal);
-      });
-  </script>
-
-  {% endblock %}
+    document.getElementById('booking-form').addEventListener('reset', function() {
+        setTimeout(function() {
+            roomSelector.selectedIndex = 0;
+            calculateTotal();
+        }, 0);
+    });
+});
+</script>
+<script src="{% static 'Allfiles/Js/booking-availability.js' %}"></script>
+{% endblock %}

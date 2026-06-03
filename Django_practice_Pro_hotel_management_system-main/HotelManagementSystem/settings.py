@@ -1,11 +1,16 @@
 from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-dev&h09slzzbp!j(f^_lsen+afmt_&cnl96uus15mqnjc68)60'
-DEBUG = True
-ALLOWED_HOSTS = []
+
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-dev&h09slzzbp!j(f^_lsen+afmt_&cnl96uus15mqnjc68)60',
+)
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -15,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'HotelApp'
+    'HotelApp.apps.HotelappConfig',
 ]
 
 MIDDLEWARE = [
@@ -42,6 +47,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'HotelApp.context_processors.asset_version',
+                'HotelApp.context_processors.hotel_roles',
             ],
         },
     },
@@ -52,7 +59,7 @@ WSGI_APPLICATION = 'HotelManagementSystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':  'Project_hotel',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -63,7 +70,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-# USTAWIENIA JĘZYKOWE I REGIONALNE
 LANGUAGE_CODE = 'pl'
 TIME_ZONE = 'Europe/Warsaw'
 USE_I18N = True
@@ -79,42 +85,103 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
 
-# USTAWIENIA PLIKÓW STATYCZNYCH
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/Media')
-MEDIA_URL = '/Media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/admin/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = reverse_lazy('StaffPanel')
+LOGOUT_REDIRECT_URL = reverse_lazy('Home')
 
-# USTAWIENIA PANELU JAZZMIN
 JAZZMIN_SETTINGS = {
-    "site_title": "Aladu Admin",
-    "site_header": "Aladu Hotel",
-    "site_brand": "Aladu Hotel",
+    "site_title": "Hotel Aladu — Panel",
+    "site_header": "Hotel Aladu",
+    "site_brand": "Hotel Aladu",
+    "site_logo": None,
+    "site_logo_classes": "",
+    "site_icon": None,
     "welcome_sign": "Witaj w panelu zarządzania hotelem Aladu",
-
+    "copyright": "Hotel Aladu",
+    "search_model": ["HotelApp.Online_Booking", "auth.User"],
+    "user_avatar": None,
     "topmenu_links": [
-        {"name": "Wróć na stronę główną", "url": "/", "new_window": False},
+        {"name": "Strona hotelu", "url": "/", "new_window": True, "icon": "fas fa-hotel"},
+        {"name": "Rezerwacje", "url": "admin:HotelApp_online_booking_changelist", "icon": "fas fa-calendar-check"},
     ],
-    "custom_links": {
-        "Hotelapp": [{
-            "name": "WYLOGUJ I WRÓĆ",
-            "url": "/wyloguj/",
-            "icon": "fas fa-sign-out-alt",
-        }]
-    },
+    "usermenu_links": [
+        {"name": "Strona publiczna", "url": "/", "icon": "fas fa-globe"},
+        {"name": "Wyloguj", "url": "admin:logout", "icon": "fas fa-sign-out-alt"},
+    ],
     "show_sidebar": True,
     "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["HotelApp", "auth"],
+    "custom_links": {
+        "hotelapp": [
+            {
+                "name": "Nowa rezerwacja (strona)",
+                "url": "/OnlineBooking/",
+                "icon": "fas fa-plus-circle",
+                "permissions": ["HotelApp.view_online_booking"],
+            },
+        ],
+    },
     "icons": {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
-        "HotelApp.Add_Room": "fas fa-bed",
-        "HotelApp.Add_Employee": "fas fa-user-tie",
-        "HotelApp.Online_Booking": "fas fa-calendar-check",
+        "auth.Group": "fas fa-users",
+        "HotelApp": "fas fa-hotel",
+        "HotelApp.online_booking": "fas fa-calendar-check",
+        "HotelApp.offline_booking": "fas fa-clipboard-list",
+        "HotelApp.add_room": "fas fa-bed",
+        "HotelApp.add_employee": "fas fa-user-tie",
+        "HotelApp.add_salarys": "fas fa-money-bill-wave",
+    },
+    "default_icon_parents": "fas fa-folder",
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": True,
+    "custom_css": "admin/css/aladu-admin.css",
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "HotelApp.online_booking": "collapsible",
+        "HotelApp.add_room": "horizontal_tabs",
+    },
+    "language_chooser": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "accent": "accent-warning",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": True,
+    "theme": "flatly",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-warning",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
     },
 }

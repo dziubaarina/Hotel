@@ -24,12 +24,13 @@ class Online_Booking(models.Model):
     Name = models.CharField(max_length=255)
     Surname = models.CharField(max_length=255)
     Email = models.CharField(max_length=255)
-    Phone_Number = models.IntegerField()
-    City = models.CharField(max_length=255)
-    Country = models.CharField(max_length=255)
-    Nid_No = models.CharField(max_length=255)
-    Img = models.ImageField(upload_to='')
-    Address = models.CharField(max_length=255)
+    Phone_Number = models.CharField(max_length=64)
+    City = models.CharField(max_length=255, blank=True, default='')
+    Country = models.CharField(max_length=255, blank=True, default='')
+    Room_Type = models.CharField(max_length=255, blank=True, default='')
+    Nid_No = models.CharField(max_length=255, blank=True, default='')
+    Img = models.ImageField(upload_to='bookings/', blank=True, null=True)
+    Address = models.CharField(max_length=255, blank=True, default='')
     Date = models.DateField(auto_now_add=True)
     Time = models.TimeField(auto_now_add=True)
     def __str__(self):
@@ -78,7 +79,7 @@ class Add_Employee(models.Model):
     Personal_Identity = models.CharField(max_length=255,unique=True)
     Guardian = models.CharField(max_length=255)
     Guardian_Number = models.IntegerField()
-    Upload_Image = models.ImageField(upload_to='')
+    Upload_Image = models.ImageField(upload_to='team/', blank=True, null=True)
     Address = models.CharField(max_length=255)
     Date = models.DateField(auto_now_add=True)
     Time = models.TimeField(auto_now_add=True)
@@ -94,7 +95,11 @@ class Add_Room(models.Model):
     Room_Floor = models.CharField(max_length=255)
     Room_Facility = models.CharField(max_length=500)
     Room_Price = models.CharField(max_length=255)
-    Room_Image = models.ImageField(upload_to='')
+    Room_Capacity = models.PositiveSmallIntegerField(
+        default=3,
+        help_text="Maks. liczba pokoi tego typu dostępnych w jednej nocy",
+    )
+    Room_Image = models.ImageField(upload_to='rooms/', blank=True, null=True)
     Date = models.DateField(auto_now_add=True)
     Time = models.TimeField(auto_now_add=True)
     def __str__(self):
