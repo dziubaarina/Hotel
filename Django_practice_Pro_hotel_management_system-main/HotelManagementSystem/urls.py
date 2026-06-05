@@ -12,7 +12,8 @@ urlpatterns = [
 # 2. Ścieżki aplikacji - Z przedrostkiem pl/en (np. /pl/admin/ lub /en/login/)
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
-    path('', include('HotelApp.urls'))
+    path('', include('HotelApp.urls')),
+    prefix_default_language=False,
 )
 
 if settings.DEBUG:

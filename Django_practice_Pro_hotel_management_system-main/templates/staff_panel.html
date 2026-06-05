@@ -1,0 +1,341 @@
+{% extends 'allinclude.html' %}
+{% load static aladu_extras %}
+
+{% block title %}Panel zarządzania — Hotel Aladu{% endblock %}
+{% block body_class %}aladu-page-panel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'Allfiles/Css/aladu-panel.css' %}">
+{% endblock %}
+
+{% block contant %}
+<section class="aladu-panel-hero">
+    <div class="container">
+        <div class="aladu-panel-hero-inner">
+            <div>
+                <p class="aladu-panel-eyebrow">Hotel Aladu</p>
+                <h1>Panel zarządzania</h1>
+                <p>Witaj, {{ request.user.get_full_name|default:request.user.username }} <span class="aladu-role-tag">{{ user_role_label }}</span></p>
+            </div>
+            <div class="aladu-panel-hero-actions">
+                <a href="{% url 'Home' %}" class="aladu-panel-btn aladu-panel-btn--ghost"><i class="fas fa-home"></i> Strona główna</a>
+                <a href="{% url 'OnlineBooking' %}" class="aladu-panel-btn aladu-panel-btn--ghost"><i class="fas fa-calendar-plus"></i> Rezerwacja</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="aladu-app-panel">
+    <div class="container">
+        {% if messages %}
+        <div class="aladu-panel-messages">
+            {% for message in messages %}
+            <div class="aladu-panel-alert aladu-panel-alert--{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="aladu-panel-layout">
+            <nav class="aladu-panel-nav" aria-label="Sekcje panelu">
+                <a href="?tab=przeglad" class="aladu-panel-nav-item {% if active_tab == 'przeglad' %}is-active{% endif %}">
+                    <i class="fas fa-chart-pie"></i><span>Przegląd</span>
+                </a>
+                <a href="?tab=rezerwacje" class="aladu-panel-nav-item {% if active_tab == 'rezerwacje' %}is-active{% endif %}">
+                    <i class="fas fa-calendar-check"></i><span>Rezerwacje</span>
+                    {% if booking_count %}<em class="aladu-panel-badge">{{ booking_count }}</em>{% endif %}
+                </a>
+                <a href="?tab=pokoje" class="aladu-panel-nav-item {% if active_tab == 'pokoje' %}is-active{% endif %}">
+                    <i class="fas fa-bed"></i><span>Pokoje</span>
+                    {% if room_count %}<em class="aladu-panel-badge">{{ room_count }}</em>{% endif %}
+                </a>
+                <a href="?tab=pracownicy" class="aladu-panel-nav-item {% if active_tab == 'pracownicy' %}is-active{% endif %}">
+                    <i class="fas fa-user-tie"></i><span>Pracownicy</span>
+                    {% if employee_count %}<em class="aladu-panel-badge">{{ employee_count }}</em>{% endif %}
+                </a>
+                {% if is_hotel_admin %}
+                <a href="?tab=uprawnienia" class="aladu-panel-nav-item {% if active_tab == 'uprawnienia' %}is-active{% endif %}">
+                    <i class="fas fa-user-shield"></i><span>Uprawnienia</span>
+                </a>
+                {% endif %}
+            </nav>
+
+            <div class="aladu-panel-content">
+                {% if active_tab == 'przeglad' %}
+                <div class="aladu-panel-section">
+                    <h2>Przegląd obiektu</h2>
+                    <div class="aladu-panel-stats">
+                        <div class="aladu-panel-stat">
+                            <i class="fas fa-calendar-check"></i>
+                            <strong>{{ booking_count }}</strong>
+                            <span>Rezerwacje</span>
+                        </div>
+                        <div class="aladu-panel-stat">
+                            <i class="fas fa-bed"></i>
+                            <strong>{{ room_count }}</strong>
+                            <span>Pokoje</span>
+                        </div>
+                        <div class="aladu-panel-stat">
+                            <i class="fas fa-user-tie"></i>
+                            <strong>{{ employee_count }}</strong>
+                            <span>Pracownicy panelu</span>
+                        </div>
+                        <div class="aladu-panel-stat">
+                            <i class="fas fa-users"></i>
+                            <strong>{{ user_count }}</strong>
+                            <span>Konta gości</span>
+                        </div>
+                    </div>
+                    <div class="aladu-panel-quick">
+                        <a href="?tab=rezerwacje" class="aladu-panel-btn"><i class="fas fa-list"></i> Rezerwacje</a>
+                        <a href="?tab=pokoje" class="aladu-panel-btn aladu-panel-btn--outline"><i class="fas fa-bed"></i> Pokoje</a>
+                    </div>
+                </div>
+
+                {% elif active_tab == 'rezerwacje' %}
+                <div class="aladu-panel-section">
+                    <div class="aladu-panel-section-head">
+                        <h2>Rezerwacje online</h2>
+                        <p>Ostatnie zgłoszenia z formularza na stronie.</p>
+                    </div>
+                    {% if bookings %}
+                    <div class="table-responsive aladu-panel-table-wrap">
+                        <table class="table aladu-panel-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Gość</th>
+                                    <th>Pokój</th>
+                                    <th>Przyjazd</th>
+                                    <th>Wyjazd</th>
+                                    <th>Kontakt</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for b in bookings %}
+                                <tr>
+                                    <td>#{{ b.Id }}</td>
+                                    <td><strong>{{ b.Name }} {{ b.Surname }}</strong></td>
+                                    <td>{{ b.Room_Type|default:"—" }}</td>
+                                    <td>{{ b.Check_in }}</td>
+                                    <td>{{ b.Check_out }}</td>
+                                    <td>
+                                        <small>{{ b.Email }}</small><br>
+                                        <small>{{ b.Phone_Number }}</small>
+                                    </td>
+                                    <td class="text-end">
+                                        <form method="post" action="{% url 'StaffDeleteBooking' b.Id %}" class="d-inline" onsubmit="return confirm('Usunąć rezerwację #{{ b.Id }}?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="aladu-panel-btn aladu-panel-btn--danger btn-sm" title="Usuń"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="aladu-panel-empty"><i class="fas fa-inbox"></i> Brak rezerwacji w bazie.</p>
+                    {% endif %}
+                </div>
+
+                {% elif active_tab == 'pokoje' %}
+                <div class="aladu-panel-section">
+                    <div class="aladu-panel-section-head">
+                        <h2>Obłożenie i oferty pokoi</h2>
+                    </div>
+
+                    <form method="get" class="aladu-occ-filter">
+                        <input type="hidden" name="tab" value="pokoje">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label class="form-label">Od</label>
+                                <input type="date" name="occ_from" class="form-control" value="{{ occ_from }}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Do</label>
+                                <input type="date" name="occ_to" class="form-control" value="{{ occ_to }}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="aladu-panel-btn w-100"><i class="fas fa-sync"></i> Pokaż obłożenie</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    {% if occupancy_rows %}
+                    <div class="aladu-occ-table-wrap mt-4">
+                        <table class="table aladu-panel-table aladu-occ-table">
+                            <thead>
+                                <tr>
+                                    <th>Typ pokoju</th>
+                                    <th>Limit</th>
+                                    <th>Szczyt obłożenia</th>
+                                    <th>Wolne</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in occupancy_rows %}
+                                <tr class="{% if row.full %}aladu-occ-full{% endif %}">
+                                    <td><strong>{{ row.room_type }}</strong></td>
+                                    <td>{{ row.capacity }}</td>
+                                    <td>
+                                        <span class="aladu-occ-label">{{ row.label }}</span>
+                                        <div class="aladu-occ-bar" aria-hidden="true">
+                                            <span style="width: {% widthratio row.occupied row.capacity 100 %}%"></span>
+                                        </div>
+                                    </td>
+                                    <td>{{ row.free }}</td>
+                                    <td>
+                                        {% if row.full %}
+                                        <span class="aladu-occ-badge aladu-occ-badge--full">Pełne</span>
+                                        {% else %}
+                                        <span class="aladu-occ-badge">Dostępne</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    {% if is_hotel_admin and edit_room and edit_room_form %}
+                    <div class="aladu-panel-form-card mt-4">
+                        <h3 class="aladu-panel-form-title"><i class="fas fa-pen"></i> Edycja ogłoszenia — {{ edit_room.Room_Type }}</h3>
+                        <form method="post" enctype="multipart/form-data" class="aladu-panel-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="room_id" value="{{ edit_room.Id }}">
+                            <div class="row g-3">
+                                <div class="col-md-4">{{ edit_room_form.Room_Price.label_tag }}{{ edit_room_form.Room_Price }}</div>
+                                <div class="col-md-4">{{ edit_room_form.Room_Capacity.label_tag }}{{ edit_room_form.Room_Capacity }}</div>
+                                <div class="col-12">{{ edit_room_form.Room_Facility.label_tag }}{{ edit_room_form.Room_Facility }}</div>
+                                <div class="col-12">{{ edit_room_form.Room_Image.label_tag }}{{ edit_room_form.Room_Image }}</div>
+                            </div>
+                            <div class="aladu-panel-form-actions">
+                                <button type="submit" name="edit_room" class="aladu-panel-btn"><i class="fas fa-save"></i> Zapisz ogłoszenie</button>
+                                <a href="?tab=pokoje&occ_from={{ occ_from }}&occ_to={{ occ_to }}" class="aladu-panel-btn aladu-panel-btn--outline">Anuluj</a>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                    {% if rooms %}
+                    <h3 class="aladu-panel-subtitle mt-4">Katalog typów pokoi</h3>
+                    <div class="aladu-panel-room-grid">
+                        {% for room in rooms %}
+                        <article class="aladu-panel-room-card">
+                            <div class="aladu-panel-room-card-img">
+                                <img src="{% room_photo_url room %}" alt="{{ room.Room_Type }}">
+                                <span class="aladu-panel-room-price">{{ room.Room_Price }} zł</span>
+                            </div>
+                            <div class="aladu-panel-room-body">
+                                <div class="aladu-panel-room-meta">
+                                    <span class="aladu-panel-room-num">Limit: {{ room.Room_Capacity }}</span>
+                                    <span class="aladu-panel-room-floor">#{{ room.Room_Number }}</span>
+                                </div>
+                                <h3>{{ room.Room_Type }}</h3>
+                                <p>{{ room.Room_Facility|truncatewords:18 }}</p>
+                                {% if is_hotel_admin %}
+                                <div class="aladu-panel-room-actions">
+                                    <a href="?tab=pokoje&edit={{ room.Id }}&occ_from={{ occ_from }}&occ_to={{ occ_to }}" class="aladu-panel-btn aladu-panel-btn--sm aladu-panel-btn--outline"><i class="fas fa-pen"></i> Edytuj ogłoszenie</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% elif active_tab == 'uprawnienia' and is_hotel_admin %}
+                <div class="aladu-panel-section">
+                    <div class="aladu-panel-section-head">
+                        <h2>Uprawnienia kont</h2>
+                        <p>Nadaj dostęp do panelu zwykłemu kontu gościa (rola pracownika). Administratorów tworzy się tylko w systemie zarządzania.</p>
+                    </div>
+                    <div class="aladu-panel-form-card">
+                        <h3 class="aladu-panel-form-title"><i class="fas fa-user-plus"></i> Nadaj uprawnienia pracownika</h3>
+                        <form method="post" action="{% url 'StaffGrantEmployee' %}" class="aladu-panel-form">
+                            {% csrf_token %}
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-8">
+                                    <label class="form-label">E-mail konta użytkownika</label>
+                                    <input type="email" name="email" class="form-control" placeholder="jan.kowalski@example.pl" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="aladu-panel-btn w-100"><i class="fas fa-check"></i> Nadaj pracownika</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="table-responsive aladu-panel-table-wrap mt-4">
+                        <table class="table aladu-panel-table">
+                            <thead>
+                                <tr>
+                                    <th>E-mail</th>
+                                    <th>Imię i nazwisko</th>
+                                    <th>Rola</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in portal_users %}
+                                <tr>
+                                    <td>{{ row.user.email|default:row.user.username }}</td>
+                                    <td>{{ row.user.get_full_name|default:"—" }}</td>
+                                    <td><span class="aladu-role-badge aladu-role-badge--{% if row.user.is_superuser %}admin{% elif row.user.is_staff %}staff{% else %}guest{% endif %}">{{ row.role }}</span></td>
+                                    <td class="text-end">
+                                        {% if row.can_revoke %}
+                                        <form method="post" action="{% url 'StaffRevokeEmployee' row.user.pk %}" class="d-inline" onsubmit="return confirm('Odebrać uprawnienia pracownika {{ row.user.email }}?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="aladu-panel-btn aladu-panel-btn--sm aladu-panel-btn--danger">Odbierz</button>
+                                        </form>
+                                        {% else %}
+                                        <span class="text-muted small">—</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {% elif active_tab == 'pracownicy' %}
+                <div class="aladu-panel-section">
+                    <div class="aladu-panel-section-head">
+                        <h2>Pracownicy panelu</h2>
+                        <p>Konta z dostępem do panelu zarządzania (rola pracownika).{% if is_hotel_admin %} Nadawanie uprawnień: zakładka <a href="?tab=uprawnienia">Uprawnienia</a>.{% endif %}</p>
+                    </div>
+                    {% if panel_employees %}
+                    <div class="table-responsive aladu-panel-table-wrap">
+                        <table class="table aladu-panel-table">
+                            <thead>
+                                <tr>
+                                    <th>Imię i nazwisko</th>
+                                    <th>E-mail</th>
+                                    <th>Kontakt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in panel_employees %}
+                                <tr>
+                                    <td><strong>{{ row.name }}</strong></td>
+                                    <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
+                                    <td>{{ row.phone }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="aladu-panel-empty"><i class="fas fa-user-tie"></i> Brak kont pracowników.{% if is_hotel_admin %} Nadaj uprawnienia w zakładce <a href="?tab=uprawnienia">Uprawnienia</a>.{% endif %}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

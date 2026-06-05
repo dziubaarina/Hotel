@@ -1,0 +1,1099 @@
+/**
+ * Aladu — poprawki layoutu (kompatybilność z oryginalnym Style.css + Bootstrap 5)
+ * Ładowany NA KOŃCU — nadpisuje konflikty.
+ */
+
+:root {
+    --aladu-gold: #c5a059;
+    --aladu-navy: #0f1c2e;
+}
+
+/* ---- Nagłówek: przywrócenie przezroczystego menu nad sliderem ---- */
+#header {
+    position: relative;
+    z-index: 100;
+}
+
+/* Granatowy pasek — pełna szerokość ekranu */
+#header .aladu-header-top,
+#header .header_top.aladu-header-top {
+    width: 100%;
+    background: var(--aladu-navy);
+    padding: 10px 0;
+    margin: 0;
+}
+
+#header .aladu-header-top .header_top_left ul li span,
+#header .aladu-header-top .header_top_left ul li span i {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px;
+}
+
+#header .header_top::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#header .header_top_left ul::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#header .header_top_right ul.aladu-top-actions {
+    float: right;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#header .header_top_right ul.aladu-top-actions li {
+    margin: 0 !important;
+    display: inline-block;
+    float: none;
+}
+
+#header .header_top_right ul.aladu-top-actions li a i {
+    color: #fff;
+}
+
+.aladu-lang-select {
+    background-color: var(--aladu-navy) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    padding: 5px 28px 5px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ffffff' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+.aladu-lang-select option {
+    background: #0f1c2e;
+    color: #fff;
+}
+
+.aladu-lang-select:focus {
+    outline: 2px solid var(--aladu-gold);
+    outline-offset: 2px;
+}
+
+.aladu-top-btn,
+.aladu-top-link {
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 5px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.aladu-top-book {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    color: #1a1a1a !important;
+    background: var(--aladu-gold);
+    border: 1px solid var(--aladu-gold);
+    padding: 6px 14px;
+    border-radius: 4px;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.aladu-top-book:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--aladu-navy) !important;
+}
+
+/* Menu — NIE białe tło (oryginał: półprzezroczyste nad sliderem) */
+#header .menu {
+    background: rgba(0, 0, 0, 0.35) !important;
+    height: auto !important;
+    min-height: 80px;
+    padding: 10px 0;
+}
+
+#header .menu .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#header .menu_logo h1,
+#header .aladu-brand .aladu-brand-main {
+    color: #fff !important;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 32px !important;
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0;
+    line-height: 1;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+}
+
+#header .aladu-brand {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    min-height: 56px;
+    padding: 0 12px 0 0;
+    flex-shrink: 0;
+}
+
+#header .menu_logo {
+    margin-top: 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+#header .aladu-brand:hover .aladu-brand-main {
+    color: var(--aladu-gold) !important;
+}
+
+#header #Mynav {
+    margin-left: 0 !important;
+    flex: 1;
+}
+
+#header #Mynav .navbar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#header #Mynav ul li {
+    margin-right: 8px;
+}
+
+#header #Mynav ul li a,
+#header #Mynav .nav-link {
+    color: #fff !important;
+    padding: 8px 10px !important;
+}
+
+#header #Mynav ul li a:hover,
+#header #Mynav .nav-link:hover {
+    color: var(--aladu-gold) !important;
+}
+
+#header .aladu-nav-highlight {
+    color: var(--aladu-gold) !important;
+}
+
+#header .menu .Booking_button {
+    display: none !important;
+}
+
+#header .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5);
+    margin-left: auto;
+}
+
+#header .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+@media (min-width: 992px) {
+    #header #Mynav.navbar-collapse {
+        display: flex !important;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 991px) {
+    #header .menu .container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #header #Mynav .navbar-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 0;
+    }
+
+    #header .Booking_button {
+        margin: 15px 0 0 !important;
+        width: 100%;
+        text-align: center;
+    }
+
+    #header .header_top_right ul.aladu-top-actions {
+        float: none;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    #header .header_top_left ul {
+        text-align: center;
+    }
+
+    #header .header_top_left ul li {
+        float: none;
+        display: inline-block;
+        margin: 4px 8px;
+    }
+}
+
+/* ---- Slider: negatywny margin jak w szablonie ---- */
+#slider {
+    margin-top: -167px !important;
+}
+
+#slider .slider_pic::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.35) 0%,
+        rgba(0, 0, 0, 0.25) 45%,
+        rgba(0, 0, 0, 0.65) 100%
+    );
+    z-index: 0;
+}
+
+#slider .slider_pic .container {
+    position: relative;
+    z-index: 1;
+}
+
+#slider .slide_text .hero-badge {
+    display: inline-block;
+    background: var(--aladu-gold);
+    color: #000;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+#slider .slide_text p {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 2px 12px rgba(0, 0, 0, 0.5);
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#slider .slide_text h1,
+#slider .slide_text h2 {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+}
+
+#slider .slider-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+#slider .hero-cta-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    border-radius: 4px;
+    background: var(--aladu-gold);
+    color: #1a1a1a !important;
+    border: 2px solid var(--aladu-gold);
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+#slider .hero-cta-btn:hover {
+    background: #fff;
+    border-color: #fff;
+    color: #000 !important;
+}
+
+#slider .hero-cta-btn--alt {
+    background: var(--aladu-gold);
+    border-color: var(--aladu-gold);
+    color: #1a1a1a !important;
+}
+
+/* ---- Sekcja zaufania ---- */
+.aladu-security-strip {
+    background: #f5f5f5;
+    padding: 40px 0;
+    clear: both;
+}
+
+.aladu-security-strip .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.aladu-security-strip .sec-card {
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.aladu-security-strip .sec-card i {
+    font-size: 28px;
+    color: var(--aladu-gold);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.aladu-security-strip h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #000;
+}
+
+.aladu-security-strip p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ---- Pokoje ---- */
+.price-pln {
+    color: var(--aladu-gold);
+    font-weight: 700;
+    font-size: 18px;
+    display: block;
+    margin: 8px 0;
+}
+
+.price-pln small {
+    font-weight: 400;
+    font-size: 12px;
+    color: #888;
+}
+
+.btn-zarezerwuj {
+    background: var(--aladu-gold) !important;
+    color: #000 !important;
+    padding: 12px 28px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none !important;
+    display: inline-block;
+    text-decoration: none !important;
+}
+
+.btn-zarezerwuj:hover {
+    background: #000 !important;
+    color: var(--aladu-gold) !important;
+}
+
+.ROOMS_pic {
+    position: relative;
+    overflow: hidden;
+}
+
+.ROOMS_pic img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+}
+
+.my-custom-button-box {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 2;
+}
+
+.ROOMS_text {
+    padding: 45px 15px 25px !important;
+}
+
+/* Slick — kropki pod slajderami (pokoje) */
+.ROOMS_info .room_slide {
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.ROOMS_info .slick-dots,
+.Staff_view .slick-dots {
+    bottom: 0 !important;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Galeria — strzałki zamiast kropek */
+.gallery-carousel-wrap {
+    position: relative;
+    padding: 0 48px 20px;
+}
+
+.GALLERY_view .GALLERY_slider {
+    position: relative;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.GALLERY_view .slick-dots {
+    display: none !important;
+}
+
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: var(--aladu-gold);
+    color: #1a1a1a;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s, color 0.2s;
+}
+
+.gallery-arrow:hover {
+    background: var(--aladu-navy);
+    color: #fff;
+}
+
+.gallery-prev {
+    left: 0;
+}
+
+.gallery-next {
+    right: 0;
+}
+
+@media (max-width: 576px) {
+    .gallery-carousel-wrap {
+        padding: 0 36px 16px;
+    }
+
+    .gallery-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+}
+
+/* Galeria i personel — proporcje zdjęć */
+.Staff_pic,
+.GALLERY_pic {
+    overflow: hidden;
+}
+
+.Staff_pic img,
+.GALLERY_pic img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.GALLERY_pic img {
+    height: 240px;
+}
+
+.service-icon img {
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+}
+
+/* ---- Stopka ---- */
+#footer {
+    background: var(--aladu-navy);
+    padding: 50px 0 20px;
+    clear: both;
+}
+
+#footer .menu_logo h1 {
+    color: #fff !important;
+    font-size: 24px;
+}
+
+#footer .footer_content1 p,
+#footer .footer_list2 li,
+#footer .footer_link a {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+#footer h3 {
+    color: var(--aladu-gold);
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+#footer .footer_link a:hover {
+    color: var(--aladu-gold);
+}
+
+.aladu-footer-social {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0;
+    display: flex;
+    gap: 15px;
+}
+
+.aladu-footer-social a {
+    color: var(--aladu-gold);
+    font-size: 18px;
+}
+
+.aladu-footer-contact li {
+    list-style: none;
+    margin-bottom: 10px;
+    padding-left: 0;
+}
+
+.aladu-footer-contact i {
+    color: var(--aladu-gold);
+    margin-right: 8px;
+    width: 18px;
+}
+
+.aladu-footer-bottom {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.aladu-footer-bottom p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    margin: 0;
+}
+
+/* ---- Rezerwacja ---- */
+#Booking_part {
+    padding: 60px 0;
+    background: #f5f5f5;
+}
+
+#slider_booking .slider_book_Pic {
+    min-height: 220px;
+    background-size: cover !important;
+    background-position: center !important;
+    display: flex;
+    align-items: center;
+}
+
+#slider_booking {
+    margin-top: 0;
+    padding-top: 120px;
+    background: var(--aladu-navy);
+}
+
+#slider_booking .slider_booking_text {
+    color: #fff;
+    padding: 40px 0;
+}
+
+#slider_booking .slider_booking_text a {
+    color: var(--aladu-gold);
+}
+
+.booking-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Podsumowanie rezerwacji — kontrast WCAG */
+#Booking_part .BOOKING_DETAILS .BOOKING_title p {
+    color: #555 !important;
+    font-size: 14px;
+}
+
+#Booking_part .BOOKING_DETAILS #dynamic-name {
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+#Booking_part .BOOKING_DETAILS #dynamic-name,
+#Booking_part .BOOKING_DETAILS .BOOKING_room h4,
+#Booking_part .BOOKING_DETAILS .BOOKING_room1 h4 {
+    color: #222 !important;
+}
+
+#Booking_part .BOOKING_DETAILS #dynamic-price,
+#Booking_part .BOOKING_DETAILS #dynamic-nights,
+#Booking_part .BOOKING_DETAILS #dynamic-total,
+#Booking_part .BOOKING_DETAILS .BOOKING_room span,
+#Booking_part .BOOKING_DETAILS .BOOKING_room1 span {
+    color: #333 !important;
+    font-weight: 600;
+}
+
+#Booking_part .BOOKING_DETAILS .price-pln {
+    color: #333 !important;
+}
+
+#Booking_part .BOOKING_DETAILS .price-pln small {
+    color: #666 !important;
+}
+
+#Booking_part .BOOKING_help {
+    border: 1px solid #e0e0e0 !important;
+    background: #f8f8f8 !important;
+    padding: 16px 18px !important;
+    margin-top: 1rem !important;
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+#Booking_part .BOOKING_help h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.5rem;
+}
+
+#Booking_part .BOOKING_help p {
+    color: #444 !important;
+    font-size: 14px;
+}
+
+#Booking_part .BOOKING_help i {
+    color: var(--aladu-gold) !important;
+}
+
+.booking-form-actions .btn-book-submit {
+    background: #8b6914;
+    color: #fff !important;
+    border: none;
+    padding: 14px 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.booking-form-actions .btn-book-submit i {
+    color: #fff !important;
+}
+
+.booking-form-actions .btn-book-submit:hover {
+    background: var(--aladu-navy);
+    color: #fff !important;
+}
+
+.booking-form-actions .btn-book-reset {
+    background: #fff;
+    border: 2px solid #ddd;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.booking-guest-note {
+    background: #e8f4fc;
+    border-left: 4px solid #0d6efd;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+#Booking_part .BOOKING_DETAILS,
+#Booking_part .BOOKING_from {
+    background: #fff;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.booking-room-preview {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.booking-room-preview img {
+    width: 130px;
+    height: 95px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.booking-room-preview > div {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 576px) {
+    .booking-room-preview {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .booking-room-preview img {
+        width: 100%;
+        height: 140px;
+    }
+}
+
+/* Strony logowania */
+#slide .login_bg1,
+.login_bg1 {
+    min-height: 100vh;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+/* ---- O hotelu: zdjęcie zamiast wideo ---- */
+.aladu-about-photo img {
+    width: 100%;
+    height: auto;
+    min-height: 320px;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+#about .about_video {
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* ---- Udogodnienia (nowy layout) ---- */
+.aladu-services {
+    padding: 60px 0;
+    background: #fff;
+}
+
+.aladu-services .aladu-section-title h2,
+#Staff .Staff_title h2 {
+    width: auto !important;
+    margin-left: 0 !important;
+    border-bottom: 2px solid var(--aladu-gold);
+    display: inline-block;
+    padding-bottom: 8px;
+}
+
+.aladu-services .aladu-section-title p {
+    color: #666;
+    margin-top: 12px;
+}
+
+.aladu-service-preview {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f0f0f0;
+    min-height: 360px;
+}
+
+.aladu-service-preview img {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    max-height: 520px;
+    object-fit: cover;
+    display: block;
+}
+
+.aladu-service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+}
+
+.aladu-service-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+    padding: 14px 16px;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.aladu-service-item:hover,
+.aladu-service-item.is-active {
+    border-color: var(--aladu-gold);
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.aladu-service-item.is-active {
+    border-left: 4px solid var(--aladu-gold);
+}
+
+.aladu-service-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--aladu-navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aladu-service-icon img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.aladu-service-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.aladu-service-text strong {
+    font-size: 16px;
+    color: #222;
+    font-weight: 700;
+}
+
+.aladu-service-text small {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.45;
+}
+
+/* Wyłącz stare style Service z Style.css */
+#Service .Service_menu li .service-menu-title,
+#Service .Service_items,
+#Service .Service_items1,
+#Service .Service_items2,
+#Service .Service_items3 {
+    margin: 0 !important;
+    margin-left: 0 !important;
+}
+
+#Service .Service_title h2 {
+    width: auto !important;
+    margin-left: 0 !important;
+}
+
+#Service .Service_img {
+    z-index: auto;
+}
+
+/* ---- Nasz zespół ---- */
+#Staff {
+    padding-bottom: 50px;
+}
+
+#Staff .Staff_title h2 {
+    margin-left: 0 !important;
+}
+
+.staff-carousel-wrap {
+    position: relative;
+    padding: 0 52px 10px;
+    max-width: 100%;
+}
+
+.staff-carousel-wrap .Staff_slider {
+    margin: 0;
+    padding-bottom: 0 !important;
+}
+
+.staff-carousel-wrap .Staff_slider .slick-list {
+    overflow: hidden;
+    padding: 8px 0 20px;
+}
+
+.staff-carousel-wrap .Staff_slider .slick-track {
+    display: flex;
+    align-items: stretch;
+}
+
+.staff-carousel-wrap .staff-slide {
+    padding: 0 10px;
+    height: auto;
+}
+
+.staff-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    height: 100%;
+}
+
+.staff-card-photo {
+    overflow: hidden;
+}
+
+.staff-card-photo img {
+    width: 100% !important;
+    height: 280px !important;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+
+.staff-card-caption {
+    padding: 16px 14px 18px;
+    text-align: center;
+    background: #fff;
+    border-top: 3px solid var(--aladu-gold);
+}
+
+.staff-card-caption h5 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 6px;
+    line-height: 1.3;
+}
+
+.staff-card-caption .staff-role {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    font-weight: 500;
+}
+
+.staff-arrow {
+    position: absolute;
+    top: 42%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: var(--aladu-gold);
+    color: #1a1a1a;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.staff-arrow:hover {
+    background: var(--aladu-navy);
+    color: #fff;
+}
+
+.staff-prev {
+    left: 0;
+}
+
+.staff-next {
+    right: 0;
+}
+
+.Staff_view .slick-dots {
+    display: none !important;
+}
+
+/* Ukryj stary overlay zespołu */
+.staff-card .Staff_overly,
+.staff-slide .Staff_overly {
+    display: none !important;
+}
+
+@media (max-width: 991px) {
+    .aladu-service-preview {
+        min-height: 280px;
+        margin-bottom: 8px;
+    }
+
+    .aladu-service-preview img {
+        min-height: 280px;
+    }
+}
+
+/* Rezerwacja — dostępność */
+.booking-avail-hint {
+    font-size: 0.9rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background: #f0f4f8;
+    color: #334155;
+}
+
+.booking-avail-hint.is-error {
+    background: #fdecea;
+    color: #9b2c2c;
+    border: 1px solid #f5c6cb;
+}
+
+.booking-avail-hint.is-info {
+    background: #f8f6f0;
+    color: #0f1c2e;
+    border-left: 3px solid #c5a059;
+}
+
+.aladu-room-date-filter {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,130 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static jazzmin %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block content_title %}Panel główny{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'admin:index' %}">Start</a></li>
+        <li class="breadcrumb-item active">Panel główny</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="aladu-admin-dashboard mb-4">
+        <h2><i class="fas fa-hotel"></i> Hotel Aladu</h2>
+        <div class="aladu-stat-grid">
+            <div class="aladu-stat-card">
+                <i class="fas fa-calendar-check"></i>
+                <div class="stat-value">{{ booking_count }}</div>
+                <div class="stat-label">Rezerwacje online</div>
+            </div>
+            <div class="aladu-stat-card">
+                <i class="fas fa-bed"></i>
+                <div class="stat-value">{{ room_count }}</div>
+                <div class="stat-label">Pokoje</div>
+            </div>
+            <div class="aladu-stat-card">
+                <i class="fas fa-user-tie"></i>
+                <div class="stat-value">{{ employee_count }}</div>
+                <div class="stat-label">Pracownicy</div>
+            </div>
+            <div class="aladu-stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-value">{{ user_count }}</div>
+                <div class="stat-label">Konta www</div>
+            </div>
+        </div>
+        <div class="aladu-quick-links">
+            <a href="{% url 'admin:HotelApp_online_booking_changelist' %}"><i class="fas fa-list"></i> Rezerwacje</a>
+            <a href="{% url 'admin:HotelApp_add_room_changelist' %}"><i class="fas fa-door-open"></i> Pokoje</a>
+            <a href="{% url 'admin:HotelApp_add_employee_changelist' %}"><i class="fas fa-id-badge"></i> Pracownicy</a>
+            <a href="/" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Strona hotelu</a>
+        </div>
+    </div>
+
+    {% get_side_menu using="app_list" as dashboard_list %}
+    {% if dashboard_list %}
+        {% widthratio dashboard_list|length 2 1 as middle %}
+    {% endif %}
+
+    <div class="col-lg-9 col-12">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                {% for app in dashboard_list %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="m-0">{{ app.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm">
+                                <tbody>
+                                {% for model in app.models %}
+                                    <tr>
+                                        <td>
+                                            {% if model.url %}<a href="{{ model.url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group float-end">
+                                                {% if model.add_url %}
+                                                    <a href="{{ model.add_url }}" class="btn btn-sm {{ jazzmin_ui.button_classes.success }} addlink">Dodaj</a>
+                                                {% endif %}
+                                                {% if model.url %}
+                                                    <a href="{{ model.url }}" class="btn btn-sm {{ jazzmin_ui.button_classes.info }} changelink">{% if model.custom %}Otwórz{% else %}Edytuj{% endif %}</a>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% if forloop.counter == middle|add:"0" %}
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-12">
+        <div id="content-related">
+            <div class="module" id="recent-actions-module">
+                <h4 class="mb-3">Ostatnie działania</h4>
+                {% load log %}
+                {% get_admin_log 6 as admin_log for_user user %}
+                {% if not admin_log %}
+                    <p>Brak wpisów.</p>
+                {% else %}
+                    <div class="timeline">
+                        {% for entry in admin_log %}
+                            <div>
+                                {% if entry.is_change %}
+                                    <i class="fas fa-edit bg-gray text-xs"></i>
+                                {% elif entry.is_deletion %}
+                                    <i class="fas fa-trash bg-danger text-xs"></i>
+                                {% elif entry.is_addition %}
+                                    <i class="fas fa-plus-circle bg-success text-xs"></i>
+                                {% endif %}
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> {{ entry.action_time|timesince }} temu</span>
+                                    <h3 class="timeline-header no-border">
+                                        {% if entry.is_deletion or not entry.get_admin_url %}
+                                            {{ entry.object_repr }}
+                                        {% else %}
+                                            <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                                        {% endif %}
+                                    </h3>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
