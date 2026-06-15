@@ -3,7 +3,7 @@
 {% get_current_language as LANGUAGE_CODE %}
 
 {% block title %}
-  {% if LANGUAGE_CODE == 'pl' %}Moje rezerwacje{% else %}My Bookings{% endif %} - Aladu Hotel
+  {% if LANGUAGE_CODE == 'pl' %}Moje rezerwacje{% else %}My Bookings{% endif %} - Hotel Aladu
 {% endblock %}
 
 {% block contant %}
@@ -24,13 +24,11 @@
   </div>
 </section>
 
-<section id="Booking_part">
+<section id="Booking_part" class="aladu-my-bookings">
   <div class="container">
     {% if messages %}
       {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} text-center" style="font-weight: bold;">
-          {{ message }}
-        </div>
+        <div class="alert alert-{{ message.tags }} text-center mb-4">{{ message }}</div>
       {% endfor %}
     {% endif %}
 
@@ -41,41 +39,62 @@
             <h3>{% if LANGUAGE_CODE == 'pl' %}MOJE REZERWACJE{% else %}MY BOOKINGS{% endif %}</h3>
           </div>
 
-          {% if bookings %}
-            <div class="table-responsive">
-              <table class="table table-striped align-middle">
+          {% if booking_rows %}
+            <p class="small text-muted text-center mb-3">
+              {% if LANGUAGE_CODE == 'pl' %}
+                Anulowanie online możliwe najpóźniej na 3 dni przed przyjazdem (nie w ciągu 2 dni przed datą przyjazdu).
+              {% else %}
+                Online cancellation is available until more than 2 days before check-in.
+              {% endif %}
+            </p>
+            <div class="table-responsive aladu-bookings-table-wrap">
+              <table class="table aladu-bookings-table align-middle">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>{% trans "Name" %}</th>
                     <th>{% if LANGUAGE_CODE == 'pl' %}Pokój{% else %}Room{% endif %}</th>
                     <th>{% if LANGUAGE_CODE == 'pl' %}Przyjazd{% else %}Check-in{% endif %}</th>
                     <th>{% if LANGUAGE_CODE == 'pl' %}Wyjazd{% else %}Check-out{% endif %}</th>
-                    <th>{% if LANGUAGE_CODE == 'pl' %}Akcje{% else %}Actions{% endif %}</th>
+                    <th class="text-end">{% if LANGUAGE_CODE == 'pl' %}Akcje{% else %}Actions{% endif %}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for booking in bookings %}
+                  {% for row in booking_rows %}
+                    {% with booking=row.booking %}
                     <tr>
+                      <td>{{ booking.Id }}</td>
                       <td>{{ booking.Name }} {{ booking.Surname }}</td>
-                      <td>{{ booking.Room_Type|default:"-" }}</td>
+                      <td>{{ booking.Room_Type|default:"—" }}</td>
                       <td>{{ booking.Check_in }}</td>
                       <td>{{ booking.Check_out }}</td>
-                      <td>
-                        <form method="post" action="{% url 'CancelBooking' booking.Id %}" style="display:inline;"
-                              onsubmit="return confirm('{% if LANGUAGE_CODE == 'pl' %}Czy na pewno anulować tę rezerwację?{% else %}Are you sure you want to cancel this booking?{% endif %}');">
+                      <td class="text-end">
+                        {% if row.can_cancel %}
+                        <form method="post"
+                              action="{% url 'CancelBooking' booking.Id %}"
+                              class="aladu-delete-booking-form"
+                              data-confirm="{% if LANGUAGE_CODE == 'pl' %}Czy na pewno usunąć rezerwację #{{ booking.Id }}?{% else %}Delete booking #{{ booking.Id }}?{% endif %}">
                           {% csrf_token %}
-                          <button type="submit" class="btn btn-sm btn-danger">
-                            {% if LANGUAGE_CODE == 'pl' %}Anuluj{% else %}Cancel{% endif %}
+                          <button type="submit" class="aladu-booking-delete-btn" title="{% if LANGUAGE_CODE == 'pl' %}Usuń rezerwację{% else %}Delete booking{% endif %}">
+                            <i class="fas fa-trash-alt"></i>
+                            {% if LANGUAGE_CODE == 'pl' %}Usuń{% else %}Delete{% endif %}
                           </button>
                         </form>
+                        {% else %}
+                        <span class="aladu-booking-no-cancel" title="{% if LANGUAGE_CODE == 'pl' %}Za późno na anulowanie online{% else %}Too late to cancel online{% endif %}">
+                          <i class="fas fa-lock"></i>
+                          {% if LANGUAGE_CODE == 'pl' %}Niedostępne{% else %}Unavailable{% endif %}
+                        </span>
+                        {% endif %}
                       </td>
                     </tr>
+                    {% endwith %}
                   {% endfor %}
                 </tbody>
               </table>
             </div>
           {% else %}
-            <p class="text-center py-4">
+            <p class="text-center py-4 text-muted">
               {% if LANGUAGE_CODE == 'pl' %}
                 Nie masz jeszcze żadnych rezerwacji.
               {% else %}
@@ -84,9 +103,9 @@
             </p>
           {% endif %}
 
-          <div class="onlineBooking_btn text-center mt-3">
+          <div class="onlineBooking_btn text-center mt-4">
             <a href="{% url 'OnlineBooking' %}" class="btn btn-zarezerwuj">
-              {% trans "BOOKING Now" %}
+              {% if LANGUAGE_CODE == 'pl' %}Nowa rezerwacja{% else %}{% trans "BOOKING Now" %}{% endif %}
             </a>
           </div>
         </div>
@@ -94,4 +113,15 @@
     </div>
   </div>
 </section>
+
+<script>
+document.querySelectorAll(".aladu-delete-booking-form").forEach(function (form) {
+  form.addEventListener("submit", function (e) {
+    var msg = form.getAttribute("data-confirm") || "Usunąć rezerwację?";
+    if (!window.confirm(msg)) {
+      e.preventDefault();
+    }
+  });
+});
+</script>
 {% endblock %}

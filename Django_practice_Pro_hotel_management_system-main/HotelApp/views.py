@@ -26,7 +26,7 @@ from .models import Add_Employee, Add_Room, Online_Booking
 
 from .forms import OnlineBookingForm, StaffRoomForm
 
-from .availability import availability_payload, occupancy_for_period, parse_date
+from .availability import availability_payload, occupancy_for_period, parse_date, guest_can_cancel_booking
 from .staff_users import panel_employee_rows, panel_employees_queryset
 
 
@@ -283,9 +283,16 @@ def StaffDeleteBooking(request, pk):
 
 def MyReservations(request):
 
-    bookings = Online_Booking.objects.filter(Email=request.user.email).order_by('-Check_in')
+    email = (request.user.email or request.user.username or "").strip()
 
-    return render(request, 'my_reservations.html', {'bookings': bookings})
+    bookings = Online_Booking.objects.filter(Email__iexact=email).order_by("-Check_in")
+
+    booking_rows = [
+        {"booking": b, "can_cancel": guest_can_cancel_booking(b.Check_in)}
+        for b in bookings
+    ]
+
+    return render(request, "my_reservations.html", {"booking_rows": booking_rows})
 
 
 
@@ -297,13 +304,23 @@ def MyReservations(request):
 
 def CancelBooking(request, pk):
 
-    booking = get_object_or_404(Online_Booking, pk=pk, Email=request.user.email)
+    email = (request.user.email or request.user.username or "").strip()
+
+    booking = get_object_or_404(Online_Booking, pk=pk, Email__iexact=email)
+
+    if not guest_can_cancel_booking(booking.Check_in):
+        messages.error(
+            request,
+            "Nie można usunąć rezerwacji na 2 dni lub mniej przed datą przyjazdu. "
+            "Skontaktuj się z recepcją: +48 12 345 67 89.",
+        )
+        return redirect("MyReservations")
 
     booking.delete()
 
-    messages.success(request, "Twoja rezerwacja została pomyślnie anulowana.")
+    messages.success(request, "Rezerwacja została usunięta.")
 
-    return redirect('MyReservations')
+    return redirect("MyReservations")
 
 
 

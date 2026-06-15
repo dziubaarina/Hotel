@@ -1097,3 +1097,69 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+/* Moje rezerwacje — tabela i usuwanie */
+.aladu-my-bookings .aladu-bookings-table-wrap {
+    border: 1px solid #e8ecf0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.aladu-bookings-table {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.aladu-bookings-table thead th {
+    background: #f4f4f4;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: none;
+    padding: 0.85rem 1rem;
+}
+
+.aladu-bookings-table tbody td {
+    padding: 0.85rem 1rem;
+    vertical-align: middle;
+}
+
+.aladu-bookings-table tbody tr:hover {
+    background: #faf8f3;
+}
+
+.aladu-delete-booking-form {
+    display: inline;
+    margin: 0;
+}
+
+.aladu-booking-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    border: none;
+    border-radius: 6px;
+    background: #c0392b;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.aladu-booking-delete-btn:hover {
+    background: #a93226;
+    color: #fff;
+}
+
+.aladu-booking-no-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    font-weight: 600;
+}
