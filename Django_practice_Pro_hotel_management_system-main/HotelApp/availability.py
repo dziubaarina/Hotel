@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 from .models import Add_Room, Online_Booking
 
 DATE_FMT = "%Y-%m-%d"
+CANCEL_MIN_DAYS_BEFORE_ARRIVAL = 2
 
 
 def parse_date(value):
@@ -19,6 +20,17 @@ def parse_date(value):
         except ValueError:
             continue
     return None
+
+
+def guest_can_cancel_booking(check_in, min_days=CANCEL_MIN_DAYS_BEFORE_ARRIVAL):
+    """Gość może anulować tylko gdy do przyjazdu zostało więcej niż min_days dni."""
+    check_in_date = parse_date(check_in)
+    if not check_in_date:
+        return False
+    from django.utils import timezone
+
+    today = timezone.localdate()
+    return (check_in_date - today).days > min_days
 
 
 def iter_nights(check_in, check_out):
